@@ -1,3 +1,15 @@
+const setPreviousWord = (previousWord) => {
+  const mainPart = previousWord.slice(0, -1);
+  const lastChar = previousWord.slice(-1);
+  const paragraph = document.getElementById("previousWord");
+  // const span = document.getElementById("lastPreviousChar");
+  paragraph.textContent = `前の単語: ${mainPart}`;
+  const span = document.createElement("span");
+  span.className = "highlight";
+  span.textContent = lastChar;
+  paragraph.appendChild(span);
+};
+
 const changeGameOver = (isGameOver) => {
   document.getElementById("shiritoriContainer").style.display = isGameOver
     ? "none"
@@ -27,8 +39,7 @@ const judgeResults = (words) => {
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
   } else {
-    const paragraph = document.getElementById("previousWord");
-    paragraph.textContent = `前の単語: ${previousWord}`;
+    setPreviousWord(previousWord);
   }
   return;
 };
@@ -116,8 +127,7 @@ document.querySelectorAll(".resetButton").forEach((resetButton) => {
     );
     const words = await response.json();
 
-    const paragraph = document.getElementById("previousWord");
-    paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
+    setPreviousWord(words.slice(-1)[0]);
     nextWordInput.value = "";
 
     changeGameOver(false);
