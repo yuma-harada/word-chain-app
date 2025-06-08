@@ -36,7 +36,7 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
   // id: previousWordのタグを取得
   const paragraph = document.querySelector("#previousWord");
   // 取得したタグの中身を書き換える
-  paragraph.innerHTML = `前の単語: ${previousWord}`;
+  paragraph.textContent = `前の単語: ${previousWord}`;
   // inputタグの中身を消去する
   nextWordInput.value = "";
 };
@@ -53,6 +53,6 @@ document.querySelector("#resetButton").onclick = async () => {
   const previousWord = await response.text();
 
   const paragraph = document.querySelector("#previousWord");
-  paragraph.innerHTML = `前の単語: ${previousWord}`;
+  paragraph.textContent = `前の単語: ${previousWord}`;
   nextWordInput.value = "";
 };
