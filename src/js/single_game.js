@@ -5,6 +5,7 @@ const changeGameOver = (isGameOver) => {
   document.getElementById("gameoverContainer").style.display = isGameOver
     ? "flex"
     : "none";
+  return;
 };
 
 const judgeResults = (words) => {
@@ -29,6 +30,7 @@ const judgeResults = (words) => {
     const paragraph = document.getElementById("previousWord");
     paragraph.textContent = `前の単語: ${previousWord}`;
   }
+  return;
 };
 
 globalThis.onload = async () => {
@@ -36,15 +38,50 @@ globalThis.onload = async () => {
   const response = await fetch("/shiritori", { method: "GET" });
   const words = await response.json();
   judgeResults(words);
+  return;
 };
+
+const inputTextValidation = (isValid) => {
+  const input = document.getElementById("nextWordInput");
+  const inputError = document.getElementById("inputError");
+  if (!isValid) {
+    input.classList.add("error");
+    inputError.classList.remove("isHidden");
+  } else {
+    input.classList.remove("error");
+    inputError.classList.add("isHidden");
+  }
+  return;
+};
+
+// 入力validation
+document.getElementById("nextWordInput").addEventListener("input", (event) => {
+  const input = event.target;
+  const sendButton = document.getElementById("nextWordSendButton");
+
+  const isValid = /^[\u3040-\u309F]+$/.test(input.value);
+  if (!isValid) {
+    sendButton.classList.add("disabled");
+  } else {
+    sendButton.classList.remove("disabled");
+  }
+  return;
+});
+
 // 送信ボタンの押下時に実行
 document.getElementById("nextWordSendButton").onclick = async () => {
   // inputタグを取得
   const nextWordInput = document.getElementById("nextWordInput");
   // inputの中身を取得
   const nextWordInputText = nextWordInput.value;
+
+  const isValid = /^[\u3040-\u309F]+$/.test(nextWordInputText);
+  inputTextValidation(isValid);
+  if (!isValid) {
+    return;
+  }
+
   // POST /shiritoriを実行
-  // 次の単語をresponseに格納
   const response = await fetch(
     "/shiritori",
     {
@@ -65,6 +102,7 @@ document.getElementById("nextWordSendButton").onclick = async () => {
 
   // inputタグの中身を消去する
   nextWordInput.value = "";
+  return;
 };
 
 document.querySelectorAll(".resetButton").forEach((resetButton) => {
@@ -84,4 +122,5 @@ document.querySelectorAll(".resetButton").forEach((resetButton) => {
 
     changeGameOver(false);
   };
+  return;
 });
