@@ -1,7 +1,7 @@
 // server.js
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 
-let previousWord = "しりとり";
+let words = ["しりとり"];
 
 Deno.serve(async (_req) => {
   const pathname = new URL(_req.url).pathname;
@@ -17,7 +17,12 @@ Deno.serve(async (_req) => {
 
   // GET /shiritori: 直前の単語を返す
   if (_req.method === "GET" && pathname === "/shiritori") {
-    return new Response(previousWord);
+    return new Response(JSON.stringify(words), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   // POST /shiritori: 次の単語を受け取って保存する
@@ -27,12 +32,9 @@ Deno.serve(async (_req) => {
     // JSONの中からnextWordを取得
     const nextWord = requestJson["nextWord"];
 
-    // previousWordの末尾とnextWordの先頭が同一か確認
-    if (previousWord.slice(-1) === nextWord.slice(0, 1)) {
-      // 同一であれば、previousWordを更新
-      previousWord = nextWord;
-    } // 同一でない単語の入力時に、エラーを返す
-    else {
+    if (words.slice(-1)[0].slice(-1) === nextWord.slice(0, 1)) {
+      words.push(nextWord);
+    } else {
       return new Response(
         JSON.stringify({
           "errorMessage": "前の単語に続いていません",
@@ -46,9 +48,25 @@ Deno.serve(async (_req) => {
         },
       );
     }
-
-    return new Response(previousWord);
+    return new Response(JSON.stringify(words), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
+
+  // POST /shiritori/reset: 単語をリセットする:
+  if (_req.method === "POST" && pathname === "/shiritori/reset") {
+    words = ["しりとり"];
+    return new Response(JSON.stringify(words), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   return serveDir(
     _req,
     {

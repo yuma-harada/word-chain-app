@@ -1,17 +1,46 @@
+const changeGameOver = (isGameOver) => {
+  document.getElementById("shiritoriContainer").style.display = isGameOver
+    ? "none"
+    : "flex";
+  document.getElementById("gameoverContainer").style.display = isGameOver
+    ? "flex"
+    : "none";
+};
+
+const judgeResults = (words) => {
+  const previousWord = words.slice(-1)[0];
+
+  // 末尾が"ん"で終わるとき
+  if (previousWord.slice(-1) === "ん") {
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameoverMessage");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
+  } // 同じワードが2回入力されたとき
+  else if (words.slice(0, -1).includes(previousWord)) {
+    alert(
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`,
+    );
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameoverMessage");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
+  } else {
+    const paragraph = document.getElementById("previousWord");
+    paragraph.textContent = `前の単語: ${previousWord}`;
+  }
+};
+
 globalThis.onload = async () => {
   // GET /shiritoriを実行
   const response = await fetch("/shiritori", { method: "GET" });
-  // responseの中からレスポンスのテキストデータを取得
-  const previousWord = await response.text();
-  // id: previousWordのタグを取得
-  const paragraph = document.querySelector("#previousWord");
-  // 取得したタグの中身を書き換える
-  paragraph.innerHTML = `前の単語: ${previousWord}`;
+  const words = await response.json();
+  judgeResults(words);
 };
 // 送信ボタンの押下時に実行
-document.querySelector("#nextWordSendButton").onclick = async (event) => {
+document.getElementById("nextWordSendButton").onclick = async () => {
   // inputタグを取得
-  const nextWordInput = document.querySelector("#nextWordInput");
+  const nextWordInput = document.getElementById("nextWordInput");
   // inputの中身を取得
   const nextWordInputText = nextWordInput.value;
   // POST /shiritoriを実行
@@ -31,12 +60,28 @@ document.querySelector("#nextWordSendButton").onclick = async (event) => {
     alert(errorObj["errorMessage"]);
   }
 
-  const previousWord = await response.text();
+  const words = await response.json();
+  judgeResults(words);
 
-  // id: previousWordのタグを取得
-  const paragraph = document.querySelector("#previousWord");
-  // 取得したタグの中身を書き換える
-  paragraph.innerHTML = `前の単語: ${previousWord}`;
   // inputタグの中身を消去する
   nextWordInput.value = "";
 };
+
+document.querySelectorAll(".resetButton").forEach((resetButton) => {
+  resetButton.onclick = async () => {
+    const response = await fetch(
+      "/shiritori/reset",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    const words = await response.json();
+
+    const paragraph = document.getElementById("previousWord");
+    paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
+    nextWordInput.value = "";
+
+    changeGameOver(false);
+  };
+});

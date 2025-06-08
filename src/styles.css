@@ -4,7 +4,7 @@ body {
   background-color: skyblue;
 }
 
-.button-link {
+.buttonLink {
   padding: 5%;
   margin: 5%;
   font-size: 100%;
@@ -13,7 +13,6 @@ body {
   background-color: #3498db;
   color: white;
   cursor: pointer;
-  transition: transform 0.3s ease;
   text-align: center;
   text-decoration: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -33,12 +32,12 @@ body {
   }
 }
 
-.button-link:hover {
+.buttonLink:hover {
   animation: pulse-scale 1s infinite ease-in-out;
   background-color: #12af12;
 }
 
-.button-link:active {
+.buttonLink:active {
   transform: translateY(5px);
 }
 
@@ -49,4 +48,42 @@ body {
   align-items: center;
   height: 80vh;
   font-size: 25px;
+}
+
+.button {
+  padding: 5px;
+  margin: 5px;
+  width: 150px;
+  font-size: 100%;
+  border: none;
+  border-radius: 8px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.button:active {
+  transform: translateY(2px);
+}
+
+.textInput {
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+}
+
+.backLink {
+  background-color: transparent;
+  border: none;
+  color: black;
+  background-color: #3498db;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 20px;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
 }
