@@ -35,7 +35,7 @@ body {
 
 .button-link:hover {
   animation: pulse-scale 1s infinite ease-in-out;
-  background-color: blueviolet;
+  background-color: #12af12;
 }
 
 .button-link:active {
