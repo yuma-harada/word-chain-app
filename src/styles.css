@@ -62,7 +62,6 @@ body {
   cursor: pointer;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  user-select: none;
   align-items: center;
 }
 
@@ -74,4 +73,17 @@ body {
   padding: 10px;
   margin: 10px;
   width: 300px;
+}
+
+.back-link {
+  background-color: transparent;
+  border: none;
+  color: black;
+  background-color: #3498db;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 20px;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
 }
