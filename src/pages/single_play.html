@@ -10,14 +10,16 @@
 </head>
 
 <body>
-  <!-- bodyタグの中には実際に表示するものなどを書く -->
-  <h1>しりとり</h1>
-  <!-- 現在の単語を表示する場所 -->
-  <p id="previousWord"></p>
-  <!-- 次の文字を入力するフォーム -->
-  <input id="nextWordInput" type="text" />
-  <button id="nextWordSendButton">送信</button>
-  <script src="../js/single_game.js"></script>
+  <div class="container">
+    <h1>しりとり</h1>
+    <p id="previousWord"></p>
+    <input class="text-input" id="nextWordInput" type="text" />
+    <div class="flex">
+      <button class="button" id="nextWordSendButton">送信</button>
+      <button class="button">リセット</button>
+    </div>
+    <script src="../js/single_game.js"></script>
+  </div>
 </body>
 
 </html>
