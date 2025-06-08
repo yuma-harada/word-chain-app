@@ -2,12 +2,21 @@ const setPreviousWord = (previousWord) => {
   const mainPart = previousWord.slice(0, -1);
   const lastChar = previousWord.slice(-1);
   const paragraph = document.getElementById("previousWord");
-  // const span = document.getElementById("lastPreviousChar");
-  paragraph.textContent = `前の単語: ${mainPart}`;
   const span = document.createElement("span");
   span.className = "highlight";
-  span.textContent = lastChar;
-  paragraph.appendChild(span);
+  if (lastChar === "ー") {
+    paragraph.textContent = `前の単語: ${mainPart.slice(0, -1)}`;
+    span.textContent = previousWord.slice(-2, -1);
+    const lastSpan = document.createElement("span");
+    lastSpan.textContent = lastChar;
+    paragraph.appendChild(span);
+    paragraph.appendChild(lastSpan);
+  } else {
+    paragraph.textContent = `前の単語: ${mainPart}`;
+    span.textContent = lastChar;
+    paragraph.appendChild(span);
+  }
+  return;
 };
 
 const changeGameOver = (isGameOver) => {
@@ -70,7 +79,7 @@ document.getElementById("nextWordInput").addEventListener("input", (event) => {
   const input = event.target;
   const sendButton = document.getElementById("nextWordSendButton");
 
-  const isValid = /^[\u3040-\u309F]+$/.test(input.value);
+  const isValid = /^[ぁ-んー]+$/u.test(input.value);
   if (!isValid) {
     sendButton.classList.add("disabled");
   } else {
@@ -86,7 +95,7 @@ document.getElementById("nextWordSendButton").onclick = async () => {
   // inputの中身を取得
   const nextWordInputText = nextWordInput.value;
 
-  const isValid = /^[\u3040-\u309F]+$/.test(nextWordInputText);
+  const isValid = /^[ぁ-んー]+$/u.test(nextWordInputText);
   inputTextValidation(isValid);
   if (!isValid) {
     return;

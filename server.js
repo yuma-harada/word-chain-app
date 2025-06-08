@@ -32,7 +32,11 @@ Deno.serve(async (_req) => {
     // JSONの中からnextWordを取得
     const nextWord = requestJson["nextWord"];
 
-    if (words.slice(-1)[0].slice(-1) === nextWord.slice(0, 1)) {
+    if (
+      words.slice(-1)[0].slice(-1) === nextWord.slice(0, 1) ||
+      (words.slice(-1)[0].slice(-1) === "ー" &&
+        words.slice(-1)[0].slice(-2, -1) === nextWord.slice(0, 1))
+    ) {
       words.push(nextWord);
     } else {
       return new Response(
