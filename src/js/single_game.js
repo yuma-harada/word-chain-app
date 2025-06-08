@@ -1,8 +1,8 @@
 const changeGameOver = (isGameOver) => {
-  document.getElementById("shiritori-container").style.display = isGameOver
+  document.getElementById("shiritoriContainer").style.display = isGameOver
     ? "none"
     : "flex";
-  document.getElementById("gameover-container").style.display = isGameOver
+  document.getElementById("gameoverContainer").style.display = isGameOver
     ? "flex"
     : "none";
 };

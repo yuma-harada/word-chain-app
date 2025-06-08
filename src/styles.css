@@ -4,7 +4,7 @@ body {
   background-color: skyblue;
 }
 
-.button-link {
+.buttonLink {
   padding: 5%;
   margin: 5%;
   font-size: 100%;
@@ -32,12 +32,12 @@ body {
   }
 }
 
-.button-link:hover {
+.buttonLink:hover {
   animation: pulse-scale 1s infinite ease-in-out;
   background-color: #12af12;
 }
 
-.button-link:active {
+.buttonLink:active {
   transform: translateY(5px);
 }
 
@@ -69,13 +69,13 @@ body {
   transform: translateY(2px);
 }
 
-.text-input {
+.textInput {
   padding: 10px;
   margin: 10px;
   width: 300px;
 }
 
-.back-link {
+.backLink {
   background-color: transparent;
   border: none;
   color: black;
