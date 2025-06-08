@@ -3,6 +3,22 @@ import { serveDir, serveFile } from "jsr:@std/http/file-server";
 
 let words = ["しりとり"];
 
+// 拗音対応map
+const normalizeKana = (char) => {
+  const map = {
+    "ゃ": "や",
+    "ゅ": "ゆ",
+    "ょ": "よ",
+    "ぁ": "あ",
+    "ぃ": "い",
+    "ぅ": "う",
+    "ぇ": "え",
+    "ぉ": "お",
+    "っ": "つ",
+  };
+  return map[char] || char; // マップにない場合はそのまま返す
+};
+
 Deno.serve(async (_req) => {
   const pathname = new URL(_req.url).pathname;
 
@@ -32,7 +48,12 @@ Deno.serve(async (_req) => {
     // JSONの中からnextWordを取得
     const nextWord = requestJson["nextWord"];
 
-    if (words.slice(-1)[0].slice(-1) === nextWord.slice(0, 1)) {
+    if (
+      normalizeKana(words.slice(-1)[0].slice(-1)) === nextWord.slice(0, 1) ||
+      (words.slice(-1)[0].slice(-1) === "ー" &&
+        normalizeKana(words.slice(-1)[0].slice(-2, -1)) ===
+          nextWord.slice(0, 1))
+    ) {
       words.push(nextWord);
     } else {
       return new Response(

@@ -52,7 +52,8 @@ body {
 
 .button {
   padding: 5px;
-  margin: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
   width: 150px;
   font-size: 100%;
   border: none;
@@ -65,14 +66,30 @@ body {
   align-items: center;
 }
 
+.button.disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .button:active {
   transform: translateY(2px);
 }
 
+.button.disabled:active {
+  transform: none;
+}
+
 .textInput {
   padding: 10px;
-  margin: 10px;
+  margin: 10px, 10px, 0px;
   width: 300px;
+}
+
+.textInput.error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
 }
 
 .backLink {
@@ -86,4 +103,19 @@ body {
   text-align: left;
   text-decoration: none;
   user-select: none;
+}
+
+#inputError {
+  color: #b9314f;
+  font-size: 15px;
+  left: auto;
+}
+
+.isHidden {
+  visibility: hidden;
+}
+
+.highlight {
+  color: red;
+  font-weight: bold;
 }

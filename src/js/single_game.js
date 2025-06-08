@@ -1,3 +1,24 @@
+const setPreviousWord = (previousWord) => {
+  const mainPart = previousWord.slice(0, -1);
+  const lastChar = previousWord.slice(-1);
+  const paragraph = document.getElementById("previousWord");
+  const span = document.createElement("span");
+  span.className = "highlight";
+  if (lastChar === "ー") {
+    paragraph.textContent = `前の単語: ${mainPart.slice(0, -1)}`;
+    span.textContent = previousWord.slice(-2, -1);
+    const lastSpan = document.createElement("span");
+    lastSpan.textContent = lastChar;
+    paragraph.appendChild(span);
+    paragraph.appendChild(lastSpan);
+  } else {
+    paragraph.textContent = `前の単語: ${mainPart}`;
+    span.textContent = lastChar;
+    paragraph.appendChild(span);
+  }
+  return;
+};
+
 const changeGameOver = (isGameOver) => {
   document.getElementById("shiritoriContainer").style.display = isGameOver
     ? "none"
@@ -5,6 +26,7 @@ const changeGameOver = (isGameOver) => {
   document.getElementById("gameoverContainer").style.display = isGameOver
     ? "flex"
     : "none";
+  return;
 };
 
 const judgeResults = (words) => {
@@ -26,9 +48,9 @@ const judgeResults = (words) => {
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
   } else {
-    const paragraph = document.getElementById("previousWord");
-    paragraph.textContent = `前の単語: ${previousWord}`;
+    setPreviousWord(previousWord);
   }
+  return;
 };
 
 globalThis.onload = async () => {
@@ -36,15 +58,50 @@ globalThis.onload = async () => {
   const response = await fetch("/shiritori", { method: "GET" });
   const words = await response.json();
   judgeResults(words);
+  return;
 };
+
+const inputTextValidation = (isValid) => {
+  const input = document.getElementById("nextWordInput");
+  const inputError = document.getElementById("inputError");
+  if (!isValid) {
+    input.classList.add("error");
+    inputError.classList.remove("isHidden");
+  } else {
+    input.classList.remove("error");
+    inputError.classList.add("isHidden");
+  }
+  return;
+};
+
+// 入力validation
+document.getElementById("nextWordInput").addEventListener("input", (event) => {
+  const input = event.target;
+  const sendButton = document.getElementById("nextWordSendButton");
+
+  const isValid = /^[ぁ-んー]+$/u.test(input.value);
+  if (!isValid) {
+    sendButton.classList.add("disabled");
+  } else {
+    sendButton.classList.remove("disabled");
+  }
+  return;
+});
+
 // 送信ボタンの押下時に実行
 document.getElementById("nextWordSendButton").onclick = async () => {
   // inputタグを取得
   const nextWordInput = document.getElementById("nextWordInput");
   // inputの中身を取得
   const nextWordInputText = nextWordInput.value;
+
+  const isValid = /^[ぁ-んー]+$/u.test(nextWordInputText);
+  inputTextValidation(isValid);
+  if (!isValid) {
+    return;
+  }
+
   // POST /shiritoriを実行
-  // 次の単語をresponseに格納
   const response = await fetch(
     "/shiritori",
     {
@@ -65,6 +122,7 @@ document.getElementById("nextWordSendButton").onclick = async () => {
 
   // inputタグの中身を消去する
   nextWordInput.value = "";
+  return;
 };
 
 document.querySelectorAll(".resetButton").forEach((resetButton) => {
@@ -78,10 +136,10 @@ document.querySelectorAll(".resetButton").forEach((resetButton) => {
     );
     const words = await response.json();
 
-    const paragraph = document.getElementById("previousWord");
-    paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
+    setPreviousWord(words.slice(-1)[0]);
     nextWordInput.value = "";
 
     changeGameOver(false);
   };
+  return;
 });
