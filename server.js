@@ -7,9 +7,12 @@ Deno.serve(async (_req) => {
   const pathname = new URL(_req.url).pathname;
 
   // ルーティング
-  const fsRoot = "src/pages/";
+  const pageRoot = "src/pages/";
+  if (pathname === "/") {
+    return serveFile(_req, pageRoot + "index.html");
+  }
   if (pathname === "/single-play") {
-    return serveFile(_req, fsRoot + "/single_play.html");
+    return serveFile(_req, pageRoot + "single_play.html");
   }
 
   // GET /shiritori: 直前の単語を返す
