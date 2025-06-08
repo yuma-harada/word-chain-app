@@ -7,21 +7,35 @@ const changeGameOver = (isGameOver) => {
     : "none";
 };
 
-globalThis.onload = async () => {
-  // GET /shiritoriを実行
-  const response = await fetch("/shiritori", { method: "GET" });
-  const words = await response.json();
+const judgeResults = (words) => {
   const previousWord = words.slice(-1)[0];
 
+  // 末尾が"ん"で終わるとき
   if (previousWord.slice(-1) === "ん") {
     changeGameOver(true);
     const paragraph = document.getElementById("gameoverMessage");
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
+  } // 同じワードが2回入力されたとき
+  else if (words.slice(0, -1).includes(previousWord)) {
+    alert(
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`,
+    );
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameoverMessage");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
   } else {
     const paragraph = document.getElementById("previousWord");
     paragraph.textContent = `前の単語: ${previousWord}`;
   }
+};
+
+globalThis.onload = async () => {
+  // GET /shiritoriを実行
+  const response = await fetch("/shiritori", { method: "GET" });
+  const words = await response.json();
+  judgeResults(words);
 };
 // 送信ボタンの押下時に実行
 document.getElementById("nextWordSendButton").onclick = async () => {
@@ -47,22 +61,8 @@ document.getElementById("nextWordSendButton").onclick = async () => {
   }
 
   const words = await response.json();
-  const previousWord = words.slice(-1)[0];
+  judgeResults(words);
 
-  if (previousWord.slice(-1) === "ん") {
-    alert(
-      `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`,
-    );
-    changeGameOver(true);
-    const paragraph = document.getElementById("gameoverMessage");
-    paragraph.innerText =
-      `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
-  } else {
-    // id: previousWordのタグを取得
-    const paragraph = document.getElementById("previousWord");
-    // 取得したタグの中身を書き換える
-    paragraph.textContent = `前の単語: ${previousWord}`;
-  }
   // inputタグの中身を消去する
   nextWordInput.value = "";
 };
