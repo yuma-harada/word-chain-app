@@ -11,8 +11,17 @@ globalThis.onload = async () => {
   // GET /shiritoriを実行
   const response = await fetch("/shiritori", { method: "GET" });
   const words = await response.json();
-  const paragraph = document.getElementById("previousWord");
-  paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
+  const previousWord = words.slice(-1)[0];
+
+  if (previousWord.slice(-1) === "ん") {
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameoverMessage");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
+  } else {
+    const paragraph = document.getElementById("previousWord");
+    paragraph.textContent = `前の単語: ${previousWord}`;
+  }
 };
 // 送信ボタンの押下時に実行
 document.getElementById("nextWordSendButton").onclick = async () => {
