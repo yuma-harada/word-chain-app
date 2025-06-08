@@ -42,7 +42,6 @@ document.querySelector("#nextWordSendButton").onclick = async () => {
 };
 
 document.querySelector("#resetButton").onclick = async () => {
-  // 次の単語をresponseに格納
   const response = await fetch(
     "/shiritori/reset",
     {
