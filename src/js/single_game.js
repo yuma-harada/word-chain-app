@@ -9,7 +9,7 @@ globalThis.onload = async () => {
   paragraph.innerHTML = `前の単語: ${previousWord}`;
 };
 // 送信ボタンの押下時に実行
-document.querySelector("#nextWordSendButton").onclick = async (event) => {
+document.querySelector("#nextWordSendButton").onclick = async () => {
   // inputタグを取得
   const nextWordInput = document.querySelector("#nextWordInput");
   // inputの中身を取得
@@ -38,5 +38,21 @@ document.querySelector("#nextWordSendButton").onclick = async (event) => {
   // 取得したタグの中身を書き換える
   paragraph.innerHTML = `前の単語: ${previousWord}`;
   // inputタグの中身を消去する
+  nextWordInput.value = "";
+};
+
+document.querySelector("#resetButton").onclick = async () => {
+  // 次の単語をresponseに格納
+  const response = await fetch(
+    "/shiritori/reset",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+  const previousWord = await response.text();
+
+  const paragraph = document.querySelector("#previousWord");
+  paragraph.innerHTML = `前の単語: ${previousWord}`;
   nextWordInput.value = "";
 };

@@ -46,9 +46,15 @@ Deno.serve(async (_req) => {
         },
       );
     }
-
     return new Response(previousWord);
   }
+
+  // POST /shiritori/reset: 単語をリセットする:
+  if (_req.method === "POST" && pathname === "/shiritori/reset") {
+    previousWord = "しりとり";
+    return new Response(previousWord);
+  }
+
   return serveDir(
     _req,
     {
