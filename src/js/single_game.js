@@ -1,9 +1,18 @@
+const changeGameOver = (isGameOver) => {
+  document.getElementById("shiritori-container").style.display = isGameOver
+    ? "none"
+    : "flex";
+  document.getElementById("gameover-container").style.display = isGameOver
+    ? "flex"
+    : "none";
+};
+
 globalThis.onload = async () => {
   // GET /shiritoriを実行
   const response = await fetch("/shiritori", { method: "GET" });
   const words = await response.json();
   const paragraph = document.getElementById("previousWord");
-  paragraph.innerHTML = `前の単語: ${words.slice(-1)[0]}`;
+  paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
 };
 // 送信ボタンの押下時に実行
 document.getElementById("nextWordSendButton").onclick = async () => {
@@ -35,8 +44,7 @@ document.getElementById("nextWordSendButton").onclick = async () => {
     alert(
       `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`,
     );
-    document.getElementById("shiritori-container").style.display = "none";
-    document.getElementById("gameover-container").style.display = "flex";
+    changeGameOver(true);
     const paragraph = document.getElementById("gameoverMessage");
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
@@ -65,7 +73,6 @@ document.querySelectorAll(".resetButton").forEach((resetButton) => {
     paragraph.textContent = `前の単語: ${words.slice(-1)[0]}`;
     nextWordInput.value = "";
 
-    document.getElementById("gameover-container").style.display = "none";
-    document.getElementById("shiritori-container").style.display = "flex";
+    changeGameOver(false);
   };
 });
