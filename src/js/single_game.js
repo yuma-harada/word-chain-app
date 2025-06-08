@@ -1,3 +1,7 @@
+const isTextValid = (text) => {
+  return /^[ぁ-ゖー]+$/u.test(text);
+};
+
 const setPreviousWord = (previousWord) => {
   const mainPart = previousWord.slice(0, -1);
   const lastChar = previousWord.slice(-1);
@@ -79,7 +83,7 @@ document.getElementById("nextWordInput").addEventListener("input", (event) => {
   const input = event.target;
   const sendButton = document.getElementById("nextWordSendButton");
 
-  const isValid = /^[ぁ-んー]+$/u.test(input.value);
+  const isValid = isTextValid(input.value);
   if (!isValid) {
     sendButton.classList.add("disabled");
   } else {
@@ -95,7 +99,7 @@ document.getElementById("nextWordSendButton").onclick = async () => {
   // inputの中身を取得
   const nextWordInputText = nextWordInput.value;
 
-  const isValid = /^[ぁ-んー]+$/u.test(nextWordInputText);
+  const isValid = isTextValid(nextWordInputText);
   inputTextValidation(isValid);
   if (!isValid) {
     return;
