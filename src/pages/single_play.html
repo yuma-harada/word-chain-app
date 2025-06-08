@@ -12,16 +12,21 @@
 <body>
   <a class="back-link" href="/">
     << 戻る</a>
-      <div class="container">
+      <div class="container" id="shiritori-container">
         <h1>しりとり</h1>
         <p id="previousWord"></p>
         <input class="text-input" id="nextWordInput" type="text" />
         <div class="flex">
           <button class="button" id="nextWordSendButton">送信</button>
-          <button class="button" id="resetButton">リセット</button>
+          <button class="button resetButton">リセット</button>
         </div>
-        <script src="../js/single_game.js"></script>
       </div>
+      <div class="container" id="gameover-container" style="display: none;">
+        <h1>GAMEOVER!</h1>
+        <p id="gameoverMessage"></p>
+        <a class="button resetButton">リセット</a>
+      </div>
+      <script src="../js/single_game.js"></script>
 </body>
 
 </html>
