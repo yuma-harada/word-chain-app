@@ -4,6 +4,13 @@ body {
   background-color: skyblue;
 }
 
+.home-button-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .button-link {
   padding: 5%;
   margin: 5%;
