@@ -1,0 +1,99 @@
+/* グレー背景 */
+.layer {
+  background: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* モーダルコンテンツ */
+.modal {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  width: 80vw;
+  max-width: 500px;
+  z-index: 500;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal__inner {
+  margin-top: 125px;
+  margin-bottom: 125px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.25); /* モーダルにシャドウをかける */
+  border-radius: 13px; /* モーダルの角を丸める */
+  display: block;
+  padding: 21px 8px 21px;
+  height: auto;
+}
+
+.modal__content {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center;
+  font-size: large;
+}
+
+.modal__button-wrap {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: inline-flex;
+}
+
+.close-button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0;
+  border: transparent;
+  cursor: pointer;
+}
+
+.close-button span {
+  width: 25px;
+  height: 2px;
+  background: #fff;
+  display: inline-block;
+  position: absolute;
+  left: calc(50% - 12px);
+  top: 50%;
+  border-radius: 20px;
+}
+
+.close-button span:nth-child(1) {
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.close-button span:nth-child(2) {
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.layer.is-open {
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+}
+
+.layer.is-open .modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-button {
+  margin: 10px;
+  margin-top: 2%;
+  width: 300px;
+  height: 10vh;
+}
