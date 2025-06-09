@@ -7,7 +7,17 @@ modalButton.addEventListener("click", async () => {
   const response = await fetch("/shiritori", { method: "GET" });
   const words = await response.json();
   const content = document.getElementById("modal-content");
-  content.innerText = words.join("\n");
+  const ul = document.createElement("ul");
+  ul.classList.add("word-list");
+
+  content.innerHTML = "";
+  words.forEach((word) => {
+    const li = document.createElement("li");
+    li.textContent = word;
+    ul.appendChild(li);
+  });
+
+  content.appendChild(ul);
   modal.classList.add("is-open");
 });
 

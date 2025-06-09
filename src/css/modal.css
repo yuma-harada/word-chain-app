@@ -17,15 +17,15 @@
   margin-right: auto;
   margin-left: auto;
   width: 80vw;
-  max-width: 500px;
+  max-width: 700px;
   z-index: 500;
   opacity: 0;
   visibility: hidden;
 }
 
 .modal__inner {
-  margin-top: 125px;
-  margin-bottom: 125px;
+  margin-top: 100px;
+  margin-bottom: 100px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
@@ -35,13 +35,13 @@
   display: block;
   padding: 21px 8px 21px;
   height: auto;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .modal__content {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  text-align: center;
-  font-size: large;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .modal__button-wrap {
@@ -96,4 +96,16 @@
   margin-top: 2%;
   width: 300px;
   height: 10vh;
+}
+
+.word-list {
+  list-style: none;
+  padding: 0;
+}
+
+.word-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.2em;
+  text-align: center;
 }
