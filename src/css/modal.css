@@ -1,4 +1,3 @@
-/* グレー背景 */
 .layer {
   background: rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -11,7 +10,6 @@
   visibility: hidden;
 }
 
-/* モーダルコンテンツ */
 .modal {
   position: relative;
   margin-right: auto;
@@ -29,8 +27,8 @@
   margin-left: auto;
   margin-right: auto;
   background: #fff;
-  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.25); /* モーダルにシャドウをかける */
-  border-radius: 13px; /* モーダルの角を丸める */
+  box-shadow: 3px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
   display: block;
   padding: 21px 8px 21px;
   height: auto;
