@@ -57,6 +57,42 @@ const judgeResults = (words) => {
   return;
 };
 
+const handleSubmit = async () => {
+  // inputタグを取得
+  const nextWordInput = document.getElementById("next-word-input");
+  // inputの中身を取得
+  const nextWordInputText = nextWordInput.value;
+
+  const isValid = isTextValid(nextWordInputText);
+  inputTextValidation(isValid);
+  if (!isValid) {
+    return;
+  }
+
+  // POST /shiritoriを実行
+  const response = await fetch(
+    "/shiritori",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nextWord: nextWordInputText }),
+    },
+  );
+  // status: 200以外が返ってきた場合にエラーを表示
+  if (response.status !== 200) {
+    const errorJson = await response.text();
+    const errorObj = JSON.parse(errorJson);
+    alert(errorObj["errorMessage"]);
+  }
+
+  const words = await response.json();
+  judgeResults(words);
+
+  // inputタグの中身を消去する
+  nextWordInput.value = "";
+  return;
+};
+
 globalThis.onload = async () => {
   // GET /shiritoriを実行
   const response = await fetch("/shiritori", { method: "GET" });
@@ -95,41 +131,19 @@ document.getElementById("next-word-input").addEventListener(
   },
 );
 
+document.getElementById("next-word-input").addEventListener(
+  "keydown",
+  async (event) => {
+    if (event.key === "Enter") {
+      await handleSubmit();
+      return;
+    }
+  },
+);
+
 // 送信ボタンの押下時に実行
 document.getElementById("next-word-send-button").onclick = async () => {
-  // inputタグを取得
-  const nextWordInput = document.getElementById("next-word-input");
-  // inputの中身を取得
-  const nextWordInputText = nextWordInput.value;
-
-  const isValid = isTextValid(nextWordInputText);
-  inputTextValidation(isValid);
-  if (!isValid) {
-    return;
-  }
-
-  // POST /shiritoriを実行
-  const response = await fetch(
-    "/shiritori",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nextWord: nextWordInputText }),
-    },
-  );
-  // status: 200以外が返ってきた場合にエラーを表示
-  if (response.status !== 200) {
-    const errorJson = await response.text();
-    const errorObj = JSON.parse(errorJson);
-    alert(errorObj["errorMessage"]);
-  }
-
-  const words = await response.json();
-  judgeResults(words);
-
-  // inputタグの中身を消去する
-  nextWordInput.value = "";
-  return;
+  await handleSubmit();
 };
 
 document.querySelectorAll(".reset-button").forEach((resetButton) => {
