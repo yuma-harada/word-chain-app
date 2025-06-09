@@ -6,7 +6,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/modal.css">
 </head>
 
 <body>
@@ -26,8 +27,24 @@
         <h1>GAMEOVER!</h1>
         <p id="gameover-message"></p>
         <a class="button reset-button">リセット</a>
+        <button class="button modal-button">使用ワード一覧</button>
       </div>
-      <script src="../js/single_game.js"></script>
+      <div class="layer js-modal">
+        <div class="modal">
+          <div class="modal__inner">
+            <div class="modal__button-wrap">
+              <button class="button close-button modal-close-button">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+            <div class="modal__content" id="modal-content">
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="../js/singleGame.js"></script>
+      <script src="../js/wordListModal.js"></script>
 </body>
 
 </html>
