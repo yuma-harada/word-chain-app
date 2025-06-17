@@ -26,22 +26,11 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  console.log(event.data);
   if (data.type === "playerList") {
-    const playerList = document.getElementById("players");
-    playerList.textContent = "";
-
-    data.players.forEach((player) => {
-      const li = document.createElement("li");
-      li.textContent = player.userName;
-      li.style.color = player.color;
-      if (player.userId === userId) {
-        const span = document.createElement("span");
-        span.textContent = "（あなた）";
-        li.appendChild(span);
-      }
-      playerList.appendChild(li);
-    });
+    updatePlayerList(data);
+  }
+  if (data.type === "start") {
+    startGame();
   }
 };
 
@@ -51,12 +40,6 @@ ws.onclose = () => {
 
 ws.onerror = (e) => {
   console.error("WebSocketエラー", e);
-};
-
-const leaveRoom = () => {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.close();
-  }
 };
 
 document.getElementById("leave-room-button").onclick = () => {
@@ -71,3 +54,34 @@ document.getElementById("leave-room-button").onclick = () => {
 globalThis.addEventListener("beforeunload", () => {
   leaveRoom();
 });
+
+const updatePlayerList = (data) => {
+  const playerList = document.getElementById("players");
+  playerList.textContent = "";
+
+  data.players.forEach((player) => {
+    console.log(player);
+    const li = document.createElement("li");
+    li.textContent = player.userName;
+    li.style.color = player.color;
+    if (player.isHost) {
+      li.style.borderColor = "red";
+    }
+    if (player.userId === userId) {
+      const span = document.createElement("span");
+      span.textContent = "（あなた）";
+      li.appendChild(span);
+    }
+    playerList.appendChild(li);
+  });
+};
+
+const startGame = () => {
+  globalThis.location.href = "/multi-play/game";
+};
+
+const leaveRoom = () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.close();
+  }
+};

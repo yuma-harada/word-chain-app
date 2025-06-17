@@ -25,10 +25,11 @@ function broadcastPlayerList(roomId) {
   const clients = rooms.get(roomId);
   if (!clients) return;
 
-  const playerList = Array.from(clients.entries()).map(([_, info]) => ({
+  const playerList = Array.from(clients.entries()).map(([_, info], index) => ({
     userId: info.userId,
     userName: info.userName,
     color: info.color,
+    isHost: index === 0 ? true : false,
   }));
 
   const message = JSON.stringify({
