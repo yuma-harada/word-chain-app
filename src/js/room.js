@@ -102,6 +102,11 @@ const leaveRoom = (ws) => {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.close();
   }
+  localStorage.removeItem("userId");
+  localStorage.removeItem("roomId");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("color");
+  globalThis.location.href = "/multi-play";
 };
 
 const showTurn = (userId, data) => {

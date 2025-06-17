@@ -57,10 +57,19 @@ const broadcastPlayerList = (roomId) => {
   }
 };
 
-const broadcastShiritori = (roomId, isStart) => {
+const broadcastShiritori = (roomId, userId, isStart) => {
   const room = rooms.get(roomId);
   const clients = room.get("clients");
   if (!room || !clients) return;
+  if (clients.size < 2) {
+    const errorMessage = JSON.stringify({
+      type: "error",
+      message: "参加者が2人以上でないとゲームを開始できません",
+    });
+    const socket = clients.get(userId).socket;
+    socket.send(errorMessage);
+    return;
+  }
   if (isStart) {
     room.set("isPlayMode", true);
   }
@@ -98,7 +107,7 @@ const broadcastNextTurn = (roomId, userId, nextWord) => {
     const currentTurn = room.get("turn");
     room.set("turn", currentTurn + 1);
     room.set("shiritoriWords", wordList);
-    broadcastShiritori(roomId, false);
+    broadcastShiritori(roomId, userId, false);
   } else {
     const errorMessage = JSON.stringify({
       type: "error",
@@ -210,9 +219,12 @@ Deno.serve(async (_req) => {
           ], ["isPlayMode", false]]),
         );
       }
-      const clients = rooms.get(roomId).get("clients");
-      clients.set(userId, { socket, userId, userName, color });
-      broadcastPlayerList(roomId);
+      const clients = rooms.get(roomId)?.get("clients");
+      if (!clients.has(userId)) {
+        clients.set(userId, { socket, userId, userName, color });
+        broadcastPlayerList(roomId);
+      }
+      console.log(clients);
     };
 
     socket.onmessage = (event) => {
@@ -220,7 +232,7 @@ Deno.serve(async (_req) => {
         const data = JSON.parse(event.data);
         switch (data.type) {
           case "startRequest":
-            broadcastShiritori(roomId, true);
+            broadcastShiritori(roomId, userId, true);
             break;
           case "sendWord":
             broadcastNextTurn(roomId, userId, data.nextWord);
@@ -231,7 +243,7 @@ Deno.serve(async (_req) => {
     };
 
     socket.onclose = () => {
-      const clients = rooms.get(roomId).get("clients");
+      const clients = rooms.get(roomId)?.get("clients");
       if (clients) {
         clients.delete(userId);
         if (clients.size === 0) rooms.delete(roomId);

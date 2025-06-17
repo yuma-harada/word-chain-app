@@ -65,11 +65,6 @@ document.getElementById("next-word-send-button").onclick = () => {
 document.querySelectorAll(".leave-room-button").forEach((leaveButton) => {
   leaveButton.onclick = () => {
     leaveRoom(ws);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("roomId");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("color");
-    globalThis.location.href = "/multi-play";
   };
 });
 
@@ -81,13 +76,7 @@ globalThis.addEventListener("beforeunload", () => {
   ) {
     const navigationType = navigationEntries[0].type;
     if (!["reload", "navigate"].includes(navigationType)) {
-      console.log(navigationType);
       leaveRoom(ws);
-      localStorage.removeItem("userId");
-      localStorage.removeItem("roomId");
-      localStorage.removeItem("userName");
-      localStorage.removeItem("color");
-      globalThis.location.href = "/multi-play";
     }
   }
 });
