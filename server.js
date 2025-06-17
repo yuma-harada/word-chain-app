@@ -21,27 +21,6 @@ const normalizeKana = (char) => {
 
 const rooms = new Map();
 
-const broadcastPlayerList = (roomId) => {
-  const clients = rooms.get(roomId)?.get("clients");
-  if (!clients) return;
-
-  const playerList = Array.from(clients.entries()).map(([_, info], index) => ({
-    userId: info.userId,
-    userName: info.userName,
-    color: info.color,
-    isHost: index === 0 ? true : false,
-  }));
-
-  const message = JSON.stringify({
-    type: "playerList",
-    players: playerList,
-  });
-
-  for (const { socket } of clients.values()) {
-    socket.send(message);
-  }
-};
-
 const getTurnUser = (room) => {
   const clients = room.get("clients");
   const users = Array.from(clients.entries());
@@ -53,14 +32,43 @@ const getTurnUser = (room) => {
   };
 };
 
+const broadcastPlayerList = (roomId) => {
+  const room = rooms.get(roomId);
+  const clients = room.get("clients");
+  if (!room || !clients) return;
+
+  const playerList = Array.from(clients.entries()).map(([_, info], index) => ({
+    userId: info.userId,
+    userName: info.userName,
+    color: info.color,
+    isHost: index === 0 ? true : false,
+  }));
+
+  const message = JSON.stringify({
+    type: "playerList",
+    players: playerList,
+    shiritoriWords: room.get("shiritoriWords"),
+    player: getTurnUser(room),
+    isPlayMode: room.get("isPlayMode"),
+  });
+
+  for (const { socket } of clients.values()) {
+    socket.send(message);
+  }
+};
+
 const broadcastShiritori = (roomId, isStart) => {
   const room = rooms.get(roomId);
   const clients = room.get("clients");
   if (!room || !clients) return;
+  if (isStart) {
+    room.set("isPlayMode", true);
+  }
   const shiritoriMessage = JSON.stringify({
     type: isStart ? "start" : "nextTurn",
     shiritoriWords: room.get("shiritoriWords"),
     player: getTurnUser(room),
+    isPlayMode: true,
   });
   for (const { socket } of clients.values()) {
     socket.send(shiritoriMessage);
@@ -199,7 +207,7 @@ Deno.serve(async (_req) => {
           new Map([["clients", new Map()], ["shiritoriWords", ["しりとり"]], [
             "turn",
             0,
-          ]]),
+          ], ["isPlayMode", false]]),
         );
       }
       const clients = rooms.get(roomId).get("clients");

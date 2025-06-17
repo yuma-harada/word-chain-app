@@ -32,11 +32,10 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
-
   if (data.type === "playerList") {
     updatePlayerList(data, userId);
   }
-  if (data.type === "start") {
+  if (data.type === "start" || data.isPlayMode === true) {
     startGame(userId, data);
   }
   if (data.type === "nextTurn") {
@@ -75,7 +74,22 @@ document.querySelectorAll(".leave-room-button").forEach((leaveButton) => {
 });
 
 globalThis.addEventListener("beforeunload", () => {
-  leaveRoom(ws);
+  const navigationEntries = performance.getEntriesByType("navigation");
+  if (
+    navigationEntries.length > 0 &&
+    navigationEntries[0] instanceof PerformanceNavigationTiming
+  ) {
+    const navigationType = navigationEntries[0].type;
+    if (!["reload", "navigate"].includes(navigationType)) {
+      console.log(navigationType);
+      leaveRoom(ws);
+      localStorage.removeItem("userId");
+      localStorage.removeItem("roomId");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("color");
+      globalThis.location.href = "/multi-play";
+    }
+  }
 });
 
 document.getElementById("next-word-input").addEventListener(
