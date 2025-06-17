@@ -12,8 +12,7 @@
   <div class="container">
     <h1>ルームに参加中</h1>
     <div>
-      <strong>ルームID:</strong> <span id="room-id"></span><br />
-      <strong>ユーザーネーム:</strong> <span id="user-name"></span>
+      <strong>ルームID:</strong> <span id="room-id"></span>
     </div>
     <div id="player-list">
       <h2>参加中のプレイヤー</h2>
@@ -21,9 +20,10 @@
         <ul id="players"></ul>
       </div>
     </div>
+    <button class="button" id="start-button">ゲームスタート</button>
     <button class="button" id="leave-room-button">ルーム退出</button>
   </div>
-  <script type="module" src="../js/room.js"></script>
+  <script type="module" src="../js/websocket.js"></script>
 </body>
 
 </html>

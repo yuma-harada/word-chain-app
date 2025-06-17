@@ -21,7 +21,7 @@ const normalizeKana = (char) => {
 
 const rooms = new Map();
 
-function broadcastPlayerList(roomId) {
+const broadcastPlayerList = (roomId) => {
   const clients = rooms.get(roomId);
   if (!clients) return;
 
@@ -40,7 +40,16 @@ function broadcastPlayerList(roomId) {
   for (const { socket } of clients.values()) {
     socket.send(message);
   }
-}
+};
+
+const broadcastGameStart = (roomId) => {
+  const clients = rooms.get(roomId);
+  if (!clients) return;
+  const startMessage = JSON.stringify({ type: "start" });
+  for (const { socket } of clients.values()) {
+    socket.send(startMessage);
+  }
+};
 
 Deno.serve(async (_req) => {
   const url = new URL(_req.url);
@@ -138,6 +147,19 @@ Deno.serve(async (_req) => {
       const clients = rooms.get(roomId);
       clients.set(userId, { socket, userId, userName, color });
       broadcastPlayerList(roomId);
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        switch (data.type) {
+          case "startRequest":
+            broadcastGameStart(roomId);
+            break;
+        }
+      } catch (e) {
+        console.error("Failed to parse message:", e);
+      }
     };
 
     socket.onclose = () => {
