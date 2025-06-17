@@ -23,31 +23,36 @@ const setPreviousWord = (previousWord) => {
   return;
 };
 
-const changeGameOver = (isGameOver) => {
+const changeGameOver = (isGameOver, turnPlayerId, userId) => {
+  console.log(turnPlayerId);
+  console.log(userId);
   document.getElementById("game-room").style.display = isGameOver
     ? "none"
     : "flex";
   document.getElementById("gameover-container").style.display = isGameOver
     ? "flex"
     : "none";
+  document.getElementById("gameover-title").innerText = turnPlayerId === userId
+    ? "YOU LOSE!"
+    : "YOU WIN!";
   return;
 };
 
-const judgeResults = (words) => {
-  const previousWord = words.slice(-1)[0];
-
+const judgeResults = (data, userId) => {
+  const previousWord = data.shiritoriWords.slice(-1)[0];
+  console.log(data.player.userId);
   // 末尾が"ん"で終わるとき
   if (previousWord.slice(-1) === "ん") {
-    changeGameOver(true);
+    changeGameOver(true, data.previousPlayerId, userId);
     const paragraph = document.getElementById("gameover-message");
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
   } // 同じワードが2回入力されたとき
-  else if (words.slice(0, -1).includes(previousWord)) {
+  else if (data.shiritoriWords.slice(0, -1).includes(previousWord)) {
     alert(
       `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`,
     );
-    changeGameOver(true);
+    changeGameOver(true, data.previousPlayerId, userId);
     const paragraph = document.getElementById("gameover-message");
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
@@ -89,7 +94,7 @@ const startGame = (userId, data) => {
 };
 
 const nextTurn = (userId, data) => {
-  judgeResults(data.shiritoriWords);
+  judgeResults(data, userId);
   showTurn(userId, data);
   const word_input = document.getElementById("next-word-input");
   const submit_button = document.getElementById("next-word-send-button");

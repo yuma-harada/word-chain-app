@@ -77,6 +77,7 @@ const broadcastShiritori = (roomId, userId, isStart) => {
     type: isStart ? "start" : "nextTurn",
     shiritoriWords: room.get("shiritoriWords"),
     player: getTurnUser(room),
+    previousPlayerId: userId,
     isPlayMode: true,
   });
   for (const { socket } of clients.values()) {
@@ -224,7 +225,6 @@ Deno.serve(async (_req) => {
         clients.set(userId, { socket, userId, userName, color });
         broadcastPlayerList(roomId);
       }
-      console.log(clients);
     };
 
     socket.onmessage = (event) => {
