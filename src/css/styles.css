@@ -4,6 +4,13 @@ body {
   background-color: skyblue;
 }
 
+.home-button-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .button-link {
   padding: 5%;
   margin: 5%;
@@ -117,5 +124,74 @@ body {
 
 .highlight {
   color: red;
+  font-weight: bold;
+}
+
+.join-button {
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  width: 300px;
+  padding: 10px;
+  margin-top: 30px;
+}
+
+.join-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 300px;
+}
+
+#players-wrapper {
+  overflow-x: hidden;
+}
+
+#players {
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+#players li {
+  list-style: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 5px 0;
+  max-width: 90vw;
+  font-size: 30px;
+  -webkit-text-stroke: 1px black;
+  font-weight: bold;
+}
+
+#players span {
+  font-size: 15px;
+  color: red;
+  -webkit-text-stroke: 0px black;
+}
+
+#start-button {
+  display: none;
+  margin: 10px;
+  padding: 20px;
+  width: 30vw;
+  min-width: 300px;
+  height: 100px;
+  background-color: #12af12;
+}
+
+#turn-display span {
+  -webkit-text-stroke: 1px black;
   font-weight: bold;
 }

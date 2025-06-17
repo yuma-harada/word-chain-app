@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>マルチプレイ マッチング</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/modal.css">
+</head>
+
+<body>
+  <!-- マッチング画面 -->
+  <div class="container" id="wait-room">
+    <h1>ルームに参加中</h1>
+    <div>
+      <strong>ルームID:</strong> <span id="room-id"></span>
+    </div>
+    <div id="player-list">
+      <h2>参加中のプレイヤー</h2>
+      <div id="players-wrapper">
+        <ul id="players"></ul>
+      </div>
+    </div>
+    <button class="button" id="start-button">ゲームスタート</button>
+    <button class="button leave-room-button">ルーム退出</button>
+  </div>
+
+  <!-- 対戦画面 -->
+  <div class="container" id="game-room" style="display: none;">
+    <h1>しりとり対戦中</h1>
+    <p id="turn-display"></p>
+    <p id="previous-word"></p>
+    <input class="text-input" id="next-word-input" type="text" />
+    <p class="is-hidden" id="input-error">ひらがなのみで入力してください</p>
+    <div class="flex">
+      <button class="button disabled" id="next-word-send-button">送信</button>
+    </div>
+  </div>
+
+  <!-- ゲームオーバー画面 -->
+  <div class="container" id="gameover-container" style="display: none;">
+    <h1 id="gameover-title"></h1>
+    <p id="gameover-message"></p>
+    <a class="button leave-room-button">ルーム退出</a>
+    <button class="button modal-button">使用ワード一覧</button>
+  </div>
+  <div class="layer js-modal">
+    <div class="modal">
+      <div class="modal__inner">
+        <div class="modal__button-wrap">
+          <button class="button close-button modal-close-button">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+        <div class="modal__content" id="modal-content">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../js/websocket.js"></script>
+</body>
+
+</html>
