@@ -22,7 +22,7 @@
       </div>
     </div>
     <button class="button" id="start-button">ゲームスタート</button>
-    <button class="button" id="leave-room-button">ルーム退出</button>
+    <button class="button leave-room-button">ルーム退出</button>
   </div>
 
   <!-- 対戦画面 -->
@@ -37,7 +37,27 @@
     </div>
   </div>
 
+  <!-- ゲームオーバー画面 -->
+  <div class="container" id="gameover-container" style="display: none;">
+    <h1>GAMEOVER!</h1>
+    <p id="gameover-message"></p>
+    <a class="button leave-room-button">ルーム退出</a>
+    <!-- <button class="button modal-button">使用ワード一覧</button> -->
   </div>
+  <!-- <div class="layer js-modal">
+    <div class="modal">
+      <div class="modal__inner">
+        <div class="modal__button-wrap">
+          <button class="button close-button modal-close-button">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+        <div class="modal__content" id="modal-content">
+        </div>
+      </div>
+    </div>
+  </div> -->
   <script type="module" src="../js/websocket.js"></script>
 </body>
 

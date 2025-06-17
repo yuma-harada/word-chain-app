@@ -24,7 +24,7 @@ const setPreviousWord = (previousWord) => {
 };
 
 const changeGameOver = (isGameOver) => {
-  document.getElementById("shiritori-container").style.display = isGameOver
+  document.getElementById("game-room").style.display = isGameOver
     ? "none"
     : "flex";
   document.getElementById("gameover-container").style.display = isGameOver
@@ -91,7 +91,11 @@ const startGame = (userId, data) => {
 const nextTurn = (userId, data) => {
   judgeResults(data.shiritoriWords);
   showTurn(userId, data);
-  document.getElementById("next-word-input").value = "";
+  const word_input = document.getElementById("next-word-input");
+  const submit_button = document.getElementById("next-word-send-button");
+  word_input.value = "";
+  word_input.disabled = userId !== data.player.userId;
+  submit_button.disabled = userId !== data.player.userId;
 };
 
 const leaveRoom = (ws) => {
