@@ -19,8 +19,31 @@ const normalizeKana = (char) => {
   return map[char] || char; // マップにない場合はそのまま返す
 };
 
+const rooms = new Map();
+
+function broadcastPlayerList(roomId) {
+  const clients = rooms.get(roomId);
+  if (!clients) return;
+
+  const playerList = Array.from(clients.entries()).map(([_, info]) => ({
+    userId: info.userId,
+    userName: info.userName,
+    color: info.color,
+  }));
+
+  const message = JSON.stringify({
+    type: "playerList",
+    players: playerList,
+  });
+
+  for (const { socket } of clients.values()) {
+    socket.send(message);
+  }
+}
+
 Deno.serve(async (_req) => {
-  const pathname = new URL(_req.url).pathname;
+  const url = new URL(_req.url);
+  const pathname = url.pathname;
 
   // ルーティング
   const pageRoot = "src/pages/";
@@ -29,6 +52,12 @@ Deno.serve(async (_req) => {
   }
   if (pathname === "/single-play") {
     return serveFile(_req, pageRoot + "single_play.html");
+  }
+  if (pathname === "/multi-play") {
+    return serveFile(_req, pageRoot + "multi_play.html");
+  }
+  if (pathname === "/multi-play/room") {
+    return serveFile(_req, pageRoot + "room.html");
   }
 
   // GET /shiritori: 直前の単語を返す
@@ -86,6 +115,42 @@ Deno.serve(async (_req) => {
         "Content-Type": "application/json",
       },
     });
+  }
+
+  // マルチプレイ用websocket
+  const isWebSocket =
+    _req.headers.get("upgrade")?.toLowerCase() === "websocket";
+  if (isWebSocket) {
+    const roomId = url.searchParams.get("roomId");
+    const userId = url.searchParams.get("userId");
+    const userName = url.searchParams.get("userName");
+    const color = url.searchParams.get("color");
+
+    if (!roomId || !userId || !userName || !color) {
+      return new Response("Missing parameters", { status: 400 });
+    }
+
+    const { socket, response } = Deno.upgradeWebSocket(_req);
+
+    socket.onopen = () => {
+      if (!rooms.has(roomId)) rooms.set(roomId, new Map());
+      const clients = rooms.get(roomId);
+      clients.set(userId, { socket, userId, userName, color });
+      broadcastPlayerList(roomId);
+    };
+
+    socket.onclose = () => {
+      const clients = rooms.get(roomId);
+      if (clients) {
+        clients.delete(userId);
+        if (clients.size === 0) rooms.delete(roomId);
+        else broadcastPlayerList(roomId);
+      }
+    };
+
+    socket.onerror = (e) => console.error("WebSocket Error:", e);
+
+    return response;
   }
 
   return serveDir(

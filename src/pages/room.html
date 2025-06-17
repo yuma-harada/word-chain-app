@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>マルチプレイ マッチング</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>ルームに参加中</h1>
+    <div>
+      <strong>ルームID:</strong> <span id="room-id"></span><br />
+      <strong>ユーザーネーム:</strong> <span id="user-name"></span>
+    </div>
+    <div id="player-list">
+      <h2>参加中のプレイヤー</h2>
+      <div id="players-wrapper">
+        <ul id="players"></ul>
+      </div>
+    </div>
+    <button class="button" id="leave-room-button">ルーム退出</button>
+  </div>
+  <script type="module" src="../js/room.js"></script>
+</body>
+
+</html>
