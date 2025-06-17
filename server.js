@@ -22,7 +22,7 @@ const normalizeKana = (char) => {
 const rooms = new Map();
 
 const broadcastPlayerList = (roomId) => {
-  const clients = rooms.get(roomId);
+  const clients = rooms.get(roomId)?.get("clients");
   if (!clients) return;
 
   const playerList = Array.from(clients.entries()).map(([_, info], index) => ({
@@ -42,10 +42,22 @@ const broadcastPlayerList = (roomId) => {
   }
 };
 
+const getTurnUser = (room) => {
+  const clients = room.get("clients");
+  const users = Array.from(clients.entries());
+  const turnUser = users[room.get("turn") % users.length][1];
+  return { userId: turnUser.userId, userName: turnUser.userName };
+};
+
 const broadcastGameStart = (roomId) => {
-  const clients = rooms.get(roomId);
+  const room = rooms.get(roomId);
+  const clients = room.get("clients");
   if (!clients) return;
-  const startMessage = JSON.stringify({ type: "start" });
+  const startMessage = JSON.stringify({
+    type: "start",
+    shiritoriWords: room.get("shiritoriWords"),
+    player: getTurnUser(room),
+  });
   for (const { socket } of clients.values()) {
     socket.send(startMessage);
   }
@@ -143,8 +155,17 @@ Deno.serve(async (_req) => {
     const { socket, response } = Deno.upgradeWebSocket(_req);
 
     socket.onopen = () => {
-      if (!rooms.has(roomId)) rooms.set(roomId, new Map());
-      const clients = rooms.get(roomId);
+      if (!rooms.has(roomId)) {
+        rooms.set(
+          roomId,
+          new Map([["clients", new Map()], ["shiritoriWords", ["しりとり"]], [
+            "turn",
+            0,
+          ]]),
+        );
+      }
+      const room = rooms.get(roomId);
+      const clients = rooms.get(roomId).get("clients");
       clients.set(userId, { socket, userId, userName, color });
       broadcastPlayerList(roomId);
     };

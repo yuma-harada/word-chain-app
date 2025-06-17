@@ -25,10 +25,13 @@ ws.onopen = () => {
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
+
   if (data.type === "playerList") {
     updatePlayerList(data, userId);
   }
   if (data.type === "start") {
+    // const roomdata = JSON.parse(data);
+    console.log(data);
     startGame();
   }
 };
