@@ -46,7 +46,11 @@ const getTurnUser = (room) => {
   const clients = room.get("clients");
   const users = Array.from(clients.entries());
   const turnUser = users[room.get("turn") % users.length][1];
-  return { userId: turnUser.userId, userName: turnUser.userName };
+  return {
+    userId: turnUser.userId,
+    userName: turnUser.userName,
+    color: turnUser.color,
+  };
 };
 
 const broadcastGameStart = (roomId) => {
@@ -164,7 +168,6 @@ Deno.serve(async (_req) => {
           ]]),
         );
       }
-      const room = rooms.get(roomId);
       const clients = rooms.get(roomId).get("clients");
       clients.set(userId, { socket, userId, userName, color });
       broadcastPlayerList(roomId);
@@ -184,7 +187,7 @@ Deno.serve(async (_req) => {
     };
 
     socket.onclose = () => {
-      const clients = rooms.get(roomId);
+      const clients = rooms.get(roomId).get("clients");
       if (clients) {
         clients.delete(userId);
         if (clients.size === 0) rooms.delete(roomId);

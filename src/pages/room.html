@@ -9,7 +9,8 @@
 </head>
 
 <body>
-  <div class="container">
+  <!-- マッチング画面 -->
+  <div class="container" id="wait-room">
     <h1>ルームに参加中</h1>
     <div>
       <strong>ルームID:</strong> <span id="room-id"></span>
@@ -22,6 +23,20 @@
     </div>
     <button class="button" id="start-button">ゲームスタート</button>
     <button class="button" id="leave-room-button">ルーム退出</button>
+  </div>
+
+  <!-- 対戦画面 -->
+  <div class="container" id="game-room">
+    <h1>しりとり対戦中</h1>
+    <p id="turn-display"></p>
+    <p id="previous-word"></p>
+    <input class="text-input" id="next-word-input" type="text" />
+    <p class="is-hidden" id="input-error">ひらがなのみで入力してください</p>
+    <div class="flex">
+      <button class="button disabled" id="next-word-send-button">送信</button>
+    </div>
+  </div>
+
   </div>
   <script type="module" src="../js/websocket.js"></script>
 </body>

@@ -190,3 +190,8 @@ label {
   height: 100px;
   background-color: #12af12;
 }
+
+#turn-display span {
+  -webkit-text-stroke: 1px black;
+  font-weight: bold;
+}

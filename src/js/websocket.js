@@ -1,4 +1,10 @@
-import { leaveRoom, startGame, updatePlayerList } from "./room.js";
+import {
+  handleSubmit,
+  isTextValid,
+  leaveRoom,
+  startGame,
+  updatePlayerList,
+} from "./room.js";
 
 const roomId = localStorage.getItem("roomId");
 const userId = localStorage.getItem("userId");
@@ -30,9 +36,7 @@ ws.onmessage = (event) => {
     updatePlayerList(data, userId);
   }
   if (data.type === "start") {
-    // const roomdata = JSON.parse(data);
-    console.log(data);
-    startGame();
+    startGame(userId, data);
   }
 };
 
@@ -48,6 +52,10 @@ document.getElementById("start-button").onclick = () => {
   ws.send(JSON.stringify({ type: "startRequest" }));
 };
 
+document.getElementById("next-word-send-button").onclick = () => {
+  handleSubmit(ws);
+};
+
 document.getElementById("leave-room-button").onclick = () => {
   leaveRoom(ws);
   localStorage.removeItem("userId");
@@ -60,3 +68,19 @@ document.getElementById("leave-room-button").onclick = () => {
 globalThis.addEventListener("beforeunload", () => {
   leaveRoom(ws);
 });
+
+document.getElementById("next-word-input").addEventListener(
+  "input",
+  (event) => {
+    const input = event.target;
+    const sendButton = document.getElementById("next-word-send-button");
+
+    const isValid = isTextValid(input.value);
+    if (!isValid) {
+      sendButton.classList.add("disabled");
+    } else {
+      sendButton.classList.remove("disabled");
+    }
+    return;
+  },
+);

@@ -1,4 +1,63 @@
-export const updatePlayerList = (data, userId) => {
+export const isTextValid = (text) => {
+  return /^[ぁ-ゖー]+$/u.test(text);
+};
+
+const setPreviousWord = (previousWord) => {
+  const mainPart = previousWord.slice(0, -1);
+  const lastChar = previousWord.slice(-1);
+  const paragraph = document.getElementById("previous-word");
+  const span = document.createElement("span");
+  span.className = "highlight";
+  if (lastChar === "ー") {
+    paragraph.textContent = `前の単語: ${mainPart.slice(0, -1)}`;
+    span.textContent = previousWord.slice(-2, -1);
+    const lastSpan = document.createElement("span");
+    lastSpan.textContent = lastChar;
+    paragraph.appendChild(span);
+    paragraph.appendChild(lastSpan);
+  } else {
+    paragraph.textContent = `前の単語: ${mainPart}`;
+    span.textContent = lastChar;
+    paragraph.appendChild(span);
+  }
+  return;
+};
+
+const changeGameOver = (isGameOver) => {
+  document.getElementById("shiritori-container").style.display = isGameOver
+    ? "none"
+    : "flex";
+  document.getElementById("gameover-container").style.display = isGameOver
+    ? "flex"
+    : "none";
+  return;
+};
+
+const judgeResults = (words) => {
+  const previousWord = words.slice(-1)[0];
+
+  // 末尾が"ん"で終わるとき
+  if (previousWord.slice(-1) === "ん") {
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameover-message");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n末尾が"ん"のワードが入力されたのでゲームを終了します。`;
+  } // 同じワードが2回入力されたとき
+  else if (words.slice(0, -1).includes(previousWord)) {
+    alert(
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`,
+    );
+    changeGameOver(true);
+    const paragraph = document.getElementById("gameover-message");
+    paragraph.innerText =
+      `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
+  } else {
+    setPreviousWord(previousWord);
+  }
+  return;
+};
+
+const updatePlayerList = (data, userId) => {
   const playerList = document.getElementById("players");
   playerList.textContent = "";
 
@@ -10,6 +69,8 @@ export const updatePlayerList = (data, userId) => {
       li.style.borderColor = "red";
       if (player.userId === userId) {
         document.getElementById("start-button").style.display = "block";
+      } else {
+        document.getElementById("start-button").style.display = "none";
       }
     }
     if (player.userId === userId) {
@@ -21,12 +82,68 @@ export const updatePlayerList = (data, userId) => {
   });
 };
 
-export const startGame = () => {
-  console.log("start");
+const startGame = (userId, data) => {
+  document.getElementById("wait-room").style.display = "none";
+  document.getElementById("game-room").style.display = "flex";
+  judgeResults(data.shiritoriWords);
+  showTurn(userId, data);
 };
 
-export const leaveRoom = (ws) => {
+const leaveRoom = (ws) => {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.close();
   }
 };
+
+const showTurn = (userId, data) => {
+  const turnDisplay = document.getElementById("turn-display");
+  turnDisplay.innerText = "";
+  const span = document.createElement("span");
+  span.style.color = data.player.color;
+  if (userId === data.player.userId) {
+    span.innerText = "あなた";
+    turnDisplay.appendChild(span);
+  } else {
+    span.innerText = data.player.userName;
+    turnDisplay.appendChild(span);
+  }
+  const suffix = document.createTextNode(
+    userId === data.player.userId ? " のターンです" : " さんのターンです",
+  );
+  turnDisplay.appendChild(suffix);
+
+  return;
+};
+
+const inputTextValidation = (isValid) => {
+  const input = document.getElementById("next-word-input");
+  const inputError = document.getElementById("input-error");
+  if (!isValid) {
+    input.classList.add("error");
+    inputError.classList.remove("is-hidden");
+  } else {
+    input.classList.remove("error");
+    inputError.classList.add("is-hidden");
+  }
+  return;
+};
+
+const handleSubmit = (ws) => {
+  // inputタグを取得
+  const nextWordInput = document.getElementById("next-word-input");
+  // inputの中身を取得
+  const nextWordInputText = nextWordInput.value;
+
+  const isValid = isTextValid(nextWordInputText);
+  inputTextValidation(isValid);
+  if (!isValid) {
+    return;
+  }
+
+  // POST /shiritoriを実行
+  ws.send(JSON.stringify({ nextWord: nextWordInputText }));
+
+  return;
+};
+
+export { handleSubmit, leaveRoom, startGame, updatePlayerList };
