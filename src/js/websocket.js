@@ -30,8 +30,11 @@ ws.onopen = () => {
   console.log("WebSocket接続成功");
 };
 
+let wordList = [];
+
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
+  wordList = data.shiritoriWords;
   if (data.type === "playerList") {
     updatePlayerList(data, userId);
   }
@@ -106,3 +109,40 @@ document.getElementById("next-word-input").addEventListener(
     }
   },
 );
+
+const modal = document.querySelector(".js-modal");
+const modalButton = document.querySelector(".modal-button");
+
+const modalClose = document.querySelector(".modal-close-button");
+
+modalButton.addEventListener("click", () => {
+  const content = document.getElementById("modal-content");
+  const ul = document.createElement("ul");
+  ul.classList.add("word-list");
+
+  content.innerHTML = "";
+  wordList.forEach((word) => {
+    const li = document.createElement("li");
+    li.textContent = word;
+    ul.appendChild(li);
+  });
+
+  content.appendChild(ul);
+  modal.classList.add("is-open");
+});
+
+modalClose.addEventListener("click", () => {
+  modal.classList.remove("is-open");
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    modal.classList.remove("is-open");
+  }
+});
+
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    modal.classList.remove("is-open");
+  }
+});
