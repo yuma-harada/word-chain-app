@@ -2,6 +2,7 @@ import {
   handleSubmit,
   isTextValid,
   leaveRoom,
+  nextTurn,
   startGame,
   updatePlayerList,
 } from "./room.js";
@@ -37,6 +38,12 @@ ws.onmessage = (event) => {
   }
   if (data.type === "start") {
     startGame(userId, data);
+  }
+  if (data.type === "nextTurn") {
+    nextTurn(userId, data);
+  }
+  if (data.type === "error") {
+    alert(data.message);
   }
 };
 
@@ -82,5 +89,15 @@ document.getElementById("next-word-input").addEventListener(
       sendButton.classList.remove("disabled");
     }
     return;
+  },
+);
+
+document.getElementById("next-word-input").addEventListener(
+  "keydown",
+  (event) => {
+    if (event.key === "Enter") {
+      handleSubmit(ws);
+      return;
+    }
   },
 );

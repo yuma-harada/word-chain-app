@@ -85,8 +85,13 @@ const updatePlayerList = (data, userId) => {
 const startGame = (userId, data) => {
   document.getElementById("wait-room").style.display = "none";
   document.getElementById("game-room").style.display = "flex";
+  nextTurn(userId, data);
+};
+
+const nextTurn = (userId, data) => {
   judgeResults(data.shiritoriWords);
   showTurn(userId, data);
+  document.getElementById("next-word-input").value = "";
 };
 
 const leaveRoom = (ws) => {
@@ -141,9 +146,9 @@ const handleSubmit = (ws) => {
   }
 
   // POST /shiritoriを実行
-  ws.send(JSON.stringify({ nextWord: nextWordInputText }));
+  ws.send(JSON.stringify({ type: "sendWord", nextWord: nextWordInputText }));
 
   return;
 };
 
-export { handleSubmit, leaveRoom, startGame, updatePlayerList };
+export { handleSubmit, leaveRoom, nextTurn, startGame, updatePlayerList };

@@ -53,17 +53,51 @@ const getTurnUser = (room) => {
   };
 };
 
-const broadcastGameStart = (roomId) => {
+const broadcastShiritori = (roomId, isStart) => {
   const room = rooms.get(roomId);
   const clients = room.get("clients");
-  if (!clients) return;
-  const startMessage = JSON.stringify({
-    type: "start",
+  if (!room || !clients) return;
+  const shiritoriMessage = JSON.stringify({
+    type: isStart ? "start" : "nextTurn",
     shiritoriWords: room.get("shiritoriWords"),
     player: getTurnUser(room),
   });
   for (const { socket } of clients.values()) {
-    socket.send(startMessage);
+    socket.send(shiritoriMessage);
+  }
+};
+
+const judgeShiritori = (words, nextWord) => {
+  if (
+    normalizeKana(words.slice(-1)[0].slice(-1)) === nextWord.slice(0, 1) ||
+    (words.slice(-1)[0].slice(-1) === "ー" &&
+      normalizeKana(words.slice(-1)[0].slice(-2, -1)) ===
+        nextWord.slice(0, 1))
+  ) {
+    words.push(nextWord);
+    return words;
+  } else {
+    return;
+  }
+};
+
+const broadcastNextTurn = (roomId, userId, nextWord) => {
+  const room = rooms.get(roomId);
+  const clients = room.get("clients");
+  if (!room || !clients) return;
+  const wordList = judgeShiritori(room.get("shiritoriWords"), nextWord);
+  if (wordList) {
+    const currentTurn = room.get("turn");
+    room.set("turn", currentTurn + 1);
+    room.set("shiritoriWords", wordList);
+    broadcastShiritori(roomId, false);
+  } else {
+    const errorMessage = JSON.stringify({
+      type: "error",
+      message: "前の単語に続いていません",
+    });
+    const socket = clients.get(userId).socket;
+    socket.send(errorMessage);
   }
 };
 
@@ -178,8 +212,10 @@ Deno.serve(async (_req) => {
         const data = JSON.parse(event.data);
         switch (data.type) {
           case "startRequest":
-            broadcastGameStart(roomId);
+            broadcastShiritori(roomId, true);
             break;
+          case "sendWord":
+            broadcastNextTurn(roomId, userId, data.nextWord);
         }
       } catch (e) {
         console.error("Failed to parse message:", e);
