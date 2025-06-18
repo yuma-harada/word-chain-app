@@ -139,3 +139,35 @@ _しりとり画面(非ターンプレイヤー)_
 
 ![ハードモードしりとり対戦画面](images/hard_mode_battle.png)
 _ハードモードしりとり対戦画面_
+
+# 動作確認方法
+
+## アプリケーションURL
+
+デプロイしたアプリケーションのURL： https://yuma-harada-word-chain-66.deno.dev
+
+## アプリケーションの実行手順
+
+### 1. denoのinstall
+
+### 2. このリポジトリをclone
+
+```shell
+git clone https://github.com/yuma-harada/word-chain-app.git
+```
+
+### 3. サーバ起動
+
+リポジトリのルートディレクトリで以下のコマンドを実行
+
+```shell
+deno task dev
+```
+
+### 4. local serverへアクセス
+
+以下のURLでlocalhost上のserverへアクセスする
+
+```
+http://0.0.0.0:8000
+```
