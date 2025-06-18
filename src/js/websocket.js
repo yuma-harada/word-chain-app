@@ -119,7 +119,10 @@ document.getElementById("next-word-input").addEventListener(
 );
 
 document.getElementById("give-up-button").onclick = () => {
-  ws.send(JSON.stringify({ type: "giveUp" }));
+  const isGiveUp = confirm("本当に降参しますか？");
+  if (isGiveUp) {
+    ws.send(JSON.stringify({ type: "giveUp" }));
+  }
 };
 
 const modal = document.querySelector(".js-modal");
