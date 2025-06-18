@@ -171,3 +171,20 @@ deno task dev
 ```
 http://0.0.0.0:8000
 ```
+
+# 参考にしたWebサイト
+
+- [JavaScriptで平仮名(ひらがな)を判定する](https://qiita.com/thzking/items/f07633e0ee9145a85ace)
+- [Unicode 平仮名 - CyberLibrarian](https://www.asahi-net.or.jp/~ax2s-kmtn/ref/unicode/u3040.html)
+- [【HTML】ボタン要素にdisabled属性をつけるのをやめませんか？](https://qiita.com/degudegu2510/items/319226d98e05a348b204)
+- [盲信的にquerySelectorAllを使用するのを卒業する。\~getElementsBy~と比べてみた\~](https://qiita.com/ari-chel/items/b06c68aec8849d0409dd)
+- [JavaScript で配列の最後の要素を取得するもう一つの方法](https://qiita.com/kerupani129/items/64ce1e80eb8efb4c2b21)
+- [input要素でEnterキー入力を検出する方法が、いつの間にかアップデートされていた](https://qiita.com/michieru/items/7d95b7b012f741d26732)
+- [JavaScriptを使ったモーダルウィンドウの作り方を解説](https://zero-plus.io/media/javascript-modal/)
+- [WebSocket サーバーを JavaScript (Deno) で書く](https://developer.mozilla.org/ja/docs/Web/API/WebSockets_API/Writing_a_WebSocket_server_in_JavaScript_Deno)
+- [リロードしてもデータを保持するためには「localStorage」](https://qiita.com/Ryusou/items/8bce84e7b036114b8d72)
+- [CSSを使って縁取り文字を表現する方法 (デザインサンプル付き)！見出しのデザインの幅を広げる!!](https://wk-partners.co.jp/homepage/blog/hpseisaku/htmlcss/huchidorimoji/)
+- [【JavaScript】オブジェクト操作メソッドを理解する Object.entries Object.fromEntriesなど](https://zenn.dev/shimiyu/articles/31d620736a8763)
+- [【html/CSS】虹色の作り方【背景・文字・アニメーション】](https://csshtml.work/rainbow/)
+- [SetオブジェクトとMapオブジェクトを使いこなそう(JavaScript 基礎構文)](https://press.monaca.io/atsushi/9225)
+- [URLアクセスとページリロードの判定処理について](https://supersoftware.jp/tech/20240402/19446/)
