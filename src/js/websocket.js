@@ -1,5 +1,6 @@
 import {
   checkHardRoom,
+  giveUp,
   handleSubmit,
   isTextValid,
   leaveRoom,
@@ -47,6 +48,9 @@ ws.onmessage = (event) => {
   }
   if (data.type === "nextTurn") {
     nextTurn(userId, data, checkHardRoom(roomId));
+  }
+  if (data.type === "playerGiveUp") {
+    giveUp(data.userId, userId);
   }
   if (data.type === "error") {
     alert(data.message);
@@ -113,6 +117,10 @@ document.getElementById("next-word-input").addEventListener(
     }
   },
 );
+
+document.getElementById("give-up-button").onclick = () => {
+  ws.send(JSON.stringify({ type: "giveUp" }));
+};
 
 const modal = document.querySelector(".js-modal");
 const modalButton = document.querySelector(".modal-button");
