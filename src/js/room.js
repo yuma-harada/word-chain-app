@@ -42,9 +42,11 @@ const changeGameOver = (isGameOver, turnPlayerId, userId) => {
 
 const judgeResults = (data, userId) => {
   const previousWord = data.shiritoriWords.slice(-1)[0];
-  console.log(data.player.userId);
   // 末尾が"ん"で終わるとき
-  if (previousWord.slice(-1) === "ん") {
+  if (
+    previousWord.slice(-1) === "ん" ||
+    (previousWord.slice(-1) === "ー" && previousWord.slice(-2, -1) === "ん")
+  ) {
     changeGameOver(true, data.previousPlayerId, userId);
     const paragraph = document.getElementById("gameover-message");
     paragraph.innerText =
