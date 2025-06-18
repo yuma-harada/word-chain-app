@@ -1,5 +1,12 @@
 # word-chain-app
 
+## 構成
+
+- deno 2.2.9
+- html
+- css
+- javascript
+
 # 画面構成と機能
 
 ## ページ遷移
@@ -188,3 +195,17 @@ http://0.0.0.0:8000
 - [【html/CSS】虹色の作り方【背景・文字・アニメーション】](https://csshtml.work/rainbow/)
 - [SetオブジェクトとMapオブジェクトを使いこなそう(JavaScript 基礎構文)](https://press.monaca.io/atsushi/9225)
 - [URLアクセスとページリロードの判定処理について](https://supersoftware.jp/tech/20240402/19446/)
+
+# AIを使った部分と使い方
+
+### WebSocketの実装
+
+WebSocketを使用したマルチプレイのマッチングルームの基盤をAIで出力
+
+=>denoでのWebSocketの実装方法の理解や、WebSocketでの実装方針の理解に使用
+
+### Web UIの構築
+
+実装したいUIを提示して、cssファイルを出力
+
+=>出力されたcssファイルを参考にUIを作成
