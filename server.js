@@ -188,10 +188,17 @@ const broadcastNextTurn = (roomId, userId, nextWord) => {
 };
 
 const playerGiveUp = (roomId, userId) => {
-  const clients = rooms.get(roomId).get("clients");
-  if (!clients) return;
+  const room = rooms.get(roomId);
+  const clients = room.get("clients");
+  if (!room || !clients) return;
   for (const { socket } of clients.values()) {
-    socket.send(JSON.stringify({ type: "playerGiveUp", userId: userId }));
+    socket.send(
+      JSON.stringify({
+        type: "playerGiveUp",
+        userId: userId,
+        shiritoriWords: room.get("shiritoriWords"),
+      }),
+    );
   }
 };
 
