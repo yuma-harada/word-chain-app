@@ -37,7 +37,10 @@ const judgeResults = (words) => {
   const previousWord = words.slice(-1)[0];
 
   // 末尾が"ん"で終わるとき
-  if (previousWord.slice(-1) === "ん") {
+  if (
+    previousWord.slice(-1) === "ん" ||
+    (previousWord.slice(-1) === "ー" && previousWord.slice(-2, -1) === "ん")
+  ) {
     changeGameOver(true);
     const paragraph = document.getElementById("gameover-message");
     paragraph.innerText =
