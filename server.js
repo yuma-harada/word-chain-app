@@ -21,6 +21,9 @@ const normalizeKana = (char) => {
 
 const rooms = new Map();
 
+// roomIdでハードモードかどうか判定
+const checkHardRoom = (roomId) => roomId.startsWith("he11_");
+
 const getTurnUser = (room) => {
   const clients = room.get("clients");
   const users = Array.from(clients.entries());
@@ -51,6 +54,11 @@ const broadcastPlayerList = (roomId) => {
     player: getTurnUser(room),
     isPlayMode: room.get("isPlayMode"),
   });
+
+  if (checkHardRoom(roomId)) {
+    message.endCharacter = room.get("endCharacter") ?? "";
+    message.wordLength = room.get("wordLength") ?? 0;
+  }
 
   for (const { socket } of clients.values()) {
     socket.send(message);
@@ -205,7 +213,7 @@ Deno.serve(async (_req) => {
     const color = url.searchParams.get("color");
 
     if (!roomId || !userId || !userName || !color) {
-      return new Response("Missing parameters", { status: 400 });
+      return new Response("not found parameters", { status: 400 });
     }
 
     const { socket, response } = Deno.upgradeWebSocket(_req);
@@ -219,6 +227,12 @@ Deno.serve(async (_req) => {
             0,
           ], ["isPlayMode", false]]),
         );
+        if (checkHardRoom(roomId)) {
+          const room = rooms.get(roomId);
+          if (!room) return;
+          room.set("endCharacter", "");
+          room.set("wordLength", 0);
+        }
       }
       const clients = rooms.get(roomId)?.get("clients");
       if (!clients.has(userId)) {

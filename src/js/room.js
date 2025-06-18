@@ -1,6 +1,8 @@
 export const isTextValid = (text) => {
-  return /^[ぁ-ゖー]+$/u.test(text);
+  return /^[ぁ-ゖー]+$/u.test(text) && !/ー{2,}/.test(text);
 };
+
+const checkHardRoom = (roomId) => roomId.startsWith("he11_");
 
 const setPreviousWord = (previousWord) => {
   const mainPart = previousWord.slice(0, -1);
@@ -165,4 +167,11 @@ const handleSubmit = (ws) => {
   return;
 };
 
-export { handleSubmit, leaveRoom, nextTurn, startGame, updatePlayerList };
+export {
+  checkHardRoom,
+  handleSubmit,
+  leaveRoom,
+  nextTurn,
+  startGame,
+  updatePlayerList,
+};
