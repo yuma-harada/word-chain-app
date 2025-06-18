@@ -118,24 +118,6 @@ const getRandomHiragana = () => {
   return "う";
 };
 
-// const hardModeShiritori = (room, userId, isStart) => {
-//   const endCharacter = getRandomHiragana();
-//   const wordLength = Math.floor(Math.random() * (9)) + 3;
-//   const shiritoriMessage = JSON.stringify({
-//     type: isStart ? "he11_start" : "he11_nextTurn",
-//     shiritoriWords: room.get("shiritoriWords"),
-//     player: getTurnUser(room),
-//     previousPlayerId: userId,
-//     isPlayMode: true,
-//     endCharacter: endCharacter,
-//     wordLength: wordLength,
-//   });
-//   for (const { socket } of clients.values()) {
-//     socket.send(shiritoriMessage);
-//   }
-//   return;
-// };
-
 const judgeShiritori = (words, nextWord) => {
   if (
     judgeStartCharacter(words, nextWord)
@@ -197,7 +179,7 @@ const broadcastNextTurn = (roomId, userId, nextWord) => {
     const errorMessage = JSON.stringify({
       type: "error",
       message: isHardMode
-        ? "先頭もしくは末尾の文字と一致していません"
+        ? "文字数の不足、または先頭もしくは末尾の文字と一致していません"
         : "前の単語に続いていません",
     });
     const socket = clients.get(userId).socket;
