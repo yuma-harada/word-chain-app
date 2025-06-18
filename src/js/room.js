@@ -10,6 +10,7 @@ const setPreviousWord = (previousWord) => {
   const paragraph = document.getElementById("previous-word");
   const span = document.createElement("span");
   span.className = "highlight";
+  let startCharacter = "";
   if (lastChar === "ー") {
     paragraph.textContent = `前の単語: ${mainPart.slice(0, -1)}`;
     span.textContent = previousWord.slice(-2, -1);
@@ -17,17 +18,38 @@ const setPreviousWord = (previousWord) => {
     lastSpan.textContent = lastChar;
     paragraph.appendChild(span);
     paragraph.appendChild(lastSpan);
+    startCharacter = previousWord.slice(-2, -1);
   } else {
     paragraph.textContent = `前の単語: ${mainPart}`;
     span.textContent = lastChar;
     paragraph.appendChild(span);
+    startCharacter = lastChar;
   }
-  return;
+  return startCharacter;
+};
+
+const setNextWordRistrict = (startCharacter, endCharacter, wordLength) => {
+  const nextWord = document.getElementById("next-word");
+  nextWord.style.display = "block";
+  nextWord.innerText = "";
+  const firstSpan = document.createElement("span");
+  const middleSpan = document.createElement("span");
+  const lastSpan = document.createElement("span");
+  const lengthSpan = document.createElement("span");
+  firstSpan.style.color = "blue";
+  lastSpan.style.color = "blue";
+  firstSpan.textContent = startCharacter;
+  middleSpan.textContent = "◯".repeat(wordLength - 2);
+  lastSpan.textContent = endCharacter;
+  lengthSpan.textContent = `(${wordLength} 文字)`;
+
+  nextWord.appendChild(firstSpan);
+  nextWord.appendChild(middleSpan);
+  nextWord.appendChild(lastSpan);
+  nextWord.appendChild(lengthSpan);
 };
 
 const changeGameOver = (isGameOver, turnPlayerId, userId) => {
-  console.log(turnPlayerId);
-  console.log(userId);
   document.getElementById("game-room").style.display = isGameOver
     ? "none"
     : "flex";
@@ -40,7 +62,7 @@ const changeGameOver = (isGameOver, turnPlayerId, userId) => {
   return;
 };
 
-const judgeResults = (data, userId) => {
+const judgeResults = (data, userId, isHardMode) => {
   const previousWord = data.shiritoriWords.slice(-1)[0];
   // 末尾が"ん"で終わるとき
   if (
@@ -61,7 +83,10 @@ const judgeResults = (data, userId) => {
     paragraph.innerText =
       `"${previousWord}"が入力されました。\n同じワードが再送されたのでゲームを終了します。`;
   } else {
-    setPreviousWord(previousWord);
+    const startCharacter = setPreviousWord(previousWord);
+    if (isHardMode) {
+      setNextWordRistrict(startCharacter, data.endCharacter, data.wordLength);
+    }
   }
   return;
 };
@@ -91,14 +116,14 @@ const updatePlayerList = (data, userId) => {
   });
 };
 
-const startGame = (userId, data) => {
+const startGame = (userId, data, isHardMode) => {
   document.getElementById("wait-room").style.display = "none";
   document.getElementById("game-room").style.display = "flex";
-  nextTurn(userId, data);
+  nextTurn(userId, data, isHardMode);
 };
 
-const nextTurn = (userId, data) => {
-  judgeResults(data, userId);
+const nextTurn = (userId, data, isHardMode) => {
+  judgeResults(data, userId, isHardMode);
   showTurn(userId, data);
   const word_input = document.getElementById("next-word-input");
   const submit_button = document.getElementById("next-word-send-button");
