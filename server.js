@@ -90,7 +90,7 @@ const broadcastShiritori = (roomId, userId, isStart) => {
   };
   if (checkHardRoom(roomId)) {
     const endCharacter = getRandomHiragana();
-    const wordLength = Math.floor(Math.random() * (9)) + 3;
+    const wordLength = Math.floor(Math.random() * (5)) + 3;
     room.set("endCharacter", endCharacter);
     room.set("wordLength", wordLength);
     shiritoriMessage.endCharacter = endCharacter;
@@ -184,6 +184,14 @@ const broadcastNextTurn = (roomId, userId, nextWord) => {
     });
     const socket = clients.get(userId).socket;
     socket.send(errorMessage);
+  }
+};
+
+const playerGiveUp = (roomId, userId) => {
+  const clients = rooms.get(roomId).get("clients");
+  if (!clients) return;
+  for (const { socket } of clients.values()) {
+    socket.send(JSON.stringify({ type: "playerGiveUp", userId: userId }));
   }
 };
 
@@ -310,6 +318,9 @@ Deno.serve(async (_req) => {
             break;
           case "sendWord":
             broadcastNextTurn(roomId, userId, data.nextWord);
+            break;
+          case "giveUp":
+            playerGiveUp(roomId, userId);
             break;
         }
       } catch (e) {

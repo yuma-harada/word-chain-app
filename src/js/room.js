@@ -31,7 +31,7 @@ const setPreviousWord = (previousWord) => {
 const setNextWordRistrict = (startCharacter, endCharacter, wordLength) => {
   const nextWord = document.getElementById("next-word");
   nextWord.style.display = "block";
-  nextWord.innerText = "";
+  nextWord.innerText = "次の単語： ";
   const firstSpan = document.createElement("span");
   const middleSpan = document.createElement("span");
   const lastSpan = document.createElement("span");
@@ -60,6 +60,15 @@ const changeGameOver = (isGameOver, turnPlayerId, userId) => {
     ? "YOU LOSE!"
     : "YOU WIN!";
   return;
+};
+
+const giveUp = (PlayerId, userId) => {
+  const paragraph = document.getElementById("gameover-message");
+  paragraph.textContent = "ターンプレイヤーが降参しました";
+  alert(
+    "ターンプレイヤーが降参しました",
+  );
+  changeGameOver(true, PlayerId, userId);
 };
 
 const judgeResults = (data, userId, isHardMode) => {
@@ -125,11 +134,20 @@ const startGame = (userId, data, isHardMode) => {
 const nextTurn = (userId, data, isHardMode) => {
   judgeResults(data, userId, isHardMode);
   showTurn(userId, data);
-  const word_input = document.getElementById("next-word-input");
-  const submit_button = document.getElementById("next-word-send-button");
-  word_input.value = "";
-  word_input.disabled = userId !== data.player.userId;
-  submit_button.disabled = userId !== data.player.userId;
+  const wordInput = document.getElementById("next-word-input");
+  const submitButton = document.getElementById("next-word-send-button");
+  const giveUpButton = document.getElementById("give-up-button");
+  const isDisabled = userId !== data.player.userId;
+  wordInput.value = "";
+  wordInput.disabled = isDisabled;
+  submitButton.disabled = isDisabled;
+  giveUpButton.disabled = isDisabled;
+  if (isDisabled) {
+    submitButton.classList.add("disabled");
+  }
+  isDisabled
+    ? giveUpButton.classList.add("disabled")
+    : giveUpButton.classList.remove("disabled");
 };
 
 const leaveRoom = (ws) => {
@@ -196,6 +214,7 @@ const handleSubmit = (ws) => {
 
 export {
   checkHardRoom,
+  giveUp,
   handleSubmit,
   leaveRoom,
   nextTurn,

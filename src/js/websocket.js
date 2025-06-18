@@ -1,5 +1,6 @@
 import {
   checkHardRoom,
+  giveUp,
   handleSubmit,
   isTextValid,
   leaveRoom,
@@ -47,6 +48,9 @@ ws.onmessage = (event) => {
   }
   if (data.type === "nextTurn") {
     nextTurn(userId, data, checkHardRoom(roomId));
+  }
+  if (data.type === "playerGiveUp") {
+    giveUp(data.userId, userId);
   }
   if (data.type === "error") {
     alert(data.message);
@@ -114,6 +118,10 @@ document.getElementById("next-word-input").addEventListener(
   },
 );
 
+document.getElementById("give-up-button").onclick = () => {
+  ws.send(JSON.stringify({ type: "giveUp" }));
+};
+
 const modal = document.querySelector(".js-modal");
 const modalButton = document.querySelector(".modal-button");
 
@@ -153,13 +161,12 @@ modal.addEventListener("click", (event) => {
 
 globalThis.onload = () => {
   const title = document.getElementById("battle-title");
-  const gameRoom = document.getElementById("game-room");
   if (checkHardRoom(roomId)) {
-    title.textContent = "ハードモード しりとり対戦中";
-    gameRoom.classList.add("he11-mode");
+    title.innerText = "ハードモード\nしりとり対戦中";
+    title.classList.add("he11-mode");
   } else {
     title.textContent = "しりとり対戦中";
-    gameRoom.classList.remove("he11-mode");
+    title.classList.remove("he11-mode");
   }
   return;
 };
