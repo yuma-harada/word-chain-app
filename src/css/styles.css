@@ -195,3 +195,43 @@ label {
   -webkit-text-stroke: 1px black;
   font-weight: bold;
 }
+
+.he11-mode {
+  height: 100vh;
+  background: linear-gradient(
+    to right,
+    #e60000,
+    #f39800,
+    #fff100,
+    #009944,
+    #0068b7,
+    #1d2088,
+    #920783
+  );
+}
+@keyframes rainbow {
+  0% {
+    background: #e60000;
+  }
+  14% {
+    background: #f39800;
+  }
+  28% {
+    background: #fff100;
+  }
+  42% {
+    background: #009944;
+  }
+  56% {
+    background: #0068b7;
+  }
+  70% {
+    background: #1d2088;
+  }
+  85% {
+    background: #920783;
+  }
+  100% {
+    background: #e60000;
+  }
+}

@@ -153,13 +153,13 @@ modal.addEventListener("click", (event) => {
 
 globalThis.onload = () => {
   const title = document.getElementById("battle-title");
+  const gameRoom = document.getElementById("game-room");
   if (checkHardRoom(roomId)) {
     title.textContent = "ハードモード しりとり対戦中";
-    title.style.color =
-      "linear-gradient(to right,#c70000,#d28300,#dfd000,#00873c,#005aa0,#181878,#800073);";
+    gameRoom.classList.add("he11-mode");
   } else {
     title.textContent = "しりとり対戦中";
-    title.style.color = "black";
+    gameRoom.classList.remove("he11-mode");
   }
   return;
 };
