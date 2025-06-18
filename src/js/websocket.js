@@ -1,4 +1,5 @@
 import {
+  checkHardRoom,
   handleSubmit,
   isTextValid,
   leaveRoom,
@@ -38,11 +39,14 @@ ws.onmessage = (event) => {
   if (data.type === "playerList") {
     updatePlayerList(data, userId);
   }
-  if (data.type === "start" || data.isPlayMode === true) {
-    startGame(userId, data);
+  if (
+    data.type === "start" ||
+    (data.isPlayMode === true)
+  ) {
+    startGame(userId, data, checkHardRoom(roomId));
   }
   if (data.type === "nextTurn") {
-    nextTurn(userId, data);
+    nextTurn(userId, data, checkHardRoom(roomId));
   }
   if (data.type === "error") {
     alert(data.message);
@@ -146,3 +150,16 @@ modal.addEventListener("click", (event) => {
     modal.classList.remove("is-open");
   }
 });
+
+globalThis.onload = () => {
+  const title = document.getElementById("battle-title");
+  const gameRoom = document.getElementById("game-room");
+  if (checkHardRoom(roomId)) {
+    title.textContent = "ハードモード しりとり対戦中";
+    gameRoom.classList.add("he11-mode");
+  } else {
+    title.textContent = "しりとり対戦中";
+    gameRoom.classList.remove("he11-mode");
+  }
+  return;
+};

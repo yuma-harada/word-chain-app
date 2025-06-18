@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>マルチプレイ マッチング</title>
+  <title>マルチプレイ</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/modal.css">
 </head>
@@ -28,11 +28,12 @@
 
   <!-- 対戦画面 -->
   <div class="container" id="game-room" style="display: none;">
-    <h1>しりとり対戦中</h1>
+    <h1 id="battle-title"></h1>
     <p id="turn-display"></p>
     <p id="previous-word"></p>
+    <p id="next-word" style="display: none;"></p>
     <input class="text-input" id="next-word-input" type="text" />
-    <p class="is-hidden" id="input-error">ひらがなのみで入力してください</p>
+    <p class="is-hidden" id="input-error">ひらがなのみ、かつ"ー"が2連続にならないように入力してください</p>
     <div class="flex">
       <button class="button disabled" id="next-word-send-button">送信</button>
     </div>
