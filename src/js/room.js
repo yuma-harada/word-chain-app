@@ -31,7 +31,7 @@ const setPreviousWord = (previousWord) => {
 const setNextWordRistrict = (startCharacter, endCharacter, wordLength) => {
   const nextWord = document.getElementById("next-word");
   nextWord.style.display = "block";
-  nextWord.innerText = "";
+  nextWord.innerText = "次の単語： ";
   const firstSpan = document.createElement("span");
   const middleSpan = document.createElement("span");
   const lastSpan = document.createElement("span");
@@ -142,9 +142,9 @@ const nextTurn = (userId, data, isHardMode) => {
   wordInput.disabled = isDisabled;
   submitButton.disabled = isDisabled;
   giveUpButton.disabled = isDisabled;
-  isDisabled
-    ? submitButton.classList.add("disabled")
-    : submitButton.classList.remove("disabled");
+  if (isDisabled) {
+    submitButton.classList.add("disabled");
+  }
   isDisabled
     ? giveUpButton.classList.add("disabled")
     : giveUpButton.classList.remove("disabled");

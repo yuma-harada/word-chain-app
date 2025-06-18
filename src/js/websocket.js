@@ -161,13 +161,12 @@ modal.addEventListener("click", (event) => {
 
 globalThis.onload = () => {
   const title = document.getElementById("battle-title");
-  const gameRoom = document.getElementById("game-room");
   if (checkHardRoom(roomId)) {
-    title.textContent = "ハードモード しりとり対戦中";
-    gameRoom.classList.add("he11-mode");
+    title.innerText = "ハードモード\nしりとり対戦中";
+    title.classList.add("he11-mode");
   } else {
     title.textContent = "しりとり対戦中";
-    gameRoom.classList.remove("he11-mode");
+    title.classList.remove("he11-mode");
   }
   return;
 };

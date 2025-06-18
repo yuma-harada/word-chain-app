@@ -90,7 +90,7 @@ const broadcastShiritori = (roomId, userId, isStart) => {
   };
   if (checkHardRoom(roomId)) {
     const endCharacter = getRandomHiragana();
-    const wordLength = Math.floor(Math.random() * (9)) + 3;
+    const wordLength = Math.floor(Math.random() * (5)) + 3;
     room.set("endCharacter", endCharacter);
     room.set("wordLength", wordLength);
     shiritoriMessage.endCharacter = endCharacter;
