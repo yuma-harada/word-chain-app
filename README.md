@@ -28,10 +28,10 @@ graph TD;
 
 ### 動作画面
 
-![ホーム画面](images/home.png) _通常のホーム画面_
+![ホーム画面](images/home.png) 通常のホーム画面
 
 ![ホバーしたシングルプレイボタン](images/hover_single_play.png)
-_ホバーした「シングルプレイ」ボタン_
+ホバーした「シングルプレイ」ボタン
 
 ## シングルプレイ
 
@@ -54,19 +54,19 @@ _ホバーした「シングルプレイ」ボタン_
 
 #### しりとりプレイ
 
-![シングルプレイ](images/single_play.png) _通常のシングルプレイページ_
+![シングルプレイ](images/single_play.png) 通常のシングルプレイページ
 
-![input_validation](images/input_validation.png) _文字列検証により弾かれた入力_
+![input_validation](images/input_validation.png) 文字列検証により弾かれた入力
 
-![サーバ側アラート](images/alert1.png) _単語が続いていないことによるアラート_
+![サーバ側アラート](images/alert1.png) 単語が続いていないことによるアラート
 
 #### GAMEOVER
 
-![ゲームオーバー1](images/gameover1.png) _「ん」の入力によるゲームオーバー_
+![ゲームオーバー1](images/gameover1.png) 「ん」の入力によるゲームオーバー
 
-![ゲームオーバー2](images/gameover2.png) _単語の再送によるゲームオーバー_
+![ゲームオーバー2](images/gameover2.png) 単語の再送によるゲームオーバー
 
-![使用ワード一覧モーダル](images/word_modal.png) _使用ワード一覧確認モーダル_
+![使用ワード一覧モーダル](images/word_modal.png) 使用ワード一覧確認モーダル
 
 ## マルチプレイロビー
 
@@ -78,7 +78,7 @@ _ホバーした「シングルプレイ」ボタン_
 
 ### 動作画面
 
-![マルチプレイロビー](images/multi_play_lobby.png) _マルチプレイロビー画面_
+![マルチプレイロビー](images/multi_play_lobby.png) マルチプレイロビー画面
 
 ## マルチプレイルーム
 
@@ -125,27 +125,27 @@ _ホバーした「シングルプレイ」ボタン_
 
 #### マッチング待機
 
-![マッチング待機画面](images/wait_room.png) _マッチング待機画面_
+![マッチング待機画面](images/wait_room.png) マッチング待機画面
 
 ![参加人数アラート](images/player_number_alert.png)
-_プレイヤーが2人未満時のアラート_
+プレイヤーが2人未満時のアラート
 
 #### しりとり対戦
 
 ![しりとり対戦画面(ターンプレイヤー)](images/battle.png)
-_しりとり対戦画面(ターンプレイヤー)_
+しりとり対戦画面(ターンプレイヤー)
 
 ![しりとり画面(非ターンプレイヤー)](images/battle_not_turn.png)
-_しりとり画面(非ターンプレイヤー)_
+しりとり画面(非ターンプレイヤー)
 
 #### GAMEOVER
 
-![ゲームオーバー3](image.png) **降参によるゲームオーバー**
+![ゲームオーバー3](images/gameover3.png) 降参によるゲームオーバー
 
 #### ハードモードしりとり対戦
 
 ![ハードモードしりとり対戦画面](images/hard_mode_battle.png)
-_ハードモードしりとり対戦画面_
+ハードモードしりとり対戦画面
 
 # 動作確認方法
 
