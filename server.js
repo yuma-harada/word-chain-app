@@ -3,6 +3,16 @@ import { serveDir, serveFile } from "jsr:@std/http/file-server";
 
 let words = ["しりとり"];
 
+const kv = await Deno.openKv();
+
+// 保存した単語リストを取得
+const saved_words = await kv.get(["words"]);
+if(saved_words.value){
+  words = saved_words.value;
+}
+
+console.log("Server has launched");
+
 // 拗音対応map
 const normalizeKana = (char) => {
   const map = {
@@ -245,6 +255,7 @@ Deno.serve(async (_req) => {
           nextWord.slice(0, 1))
     ) {
       words.push(nextWord);
+      await kv.set(["words"], words);
     } else {
       return new Response(
         JSON.stringify({
@@ -270,6 +281,7 @@ Deno.serve(async (_req) => {
   // POST /shiritori/reset: 単語をリセットする:
   if (_req.method === "POST" && pathname === "/shiritori/reset") {
     words = ["しりとり"];
+    await kv.set(["words"], words);
     return new Response(JSON.stringify(words), {
       status: 200,
       headers: {
