@@ -1,15 +1,11 @@
 // server.js
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 
-let words = ["しりとり"];
-
 const kv = await Deno.openKv();
 
 // 保存した単語リストを取得
-const saved_words = await kv.get(["words"]);
-if(saved_words.value){
-  words = saved_words.value;
-}
+const savedWords = await kv.get(["words"]);
+let words = savedWords.value ?? ["しりとり"];
 
 console.log("Server has launched");
 
